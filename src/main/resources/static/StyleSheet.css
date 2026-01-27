@@ -1,0 +1,57 @@
+/* Define styles for table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Define styles for table header */
+th {
+  background-color: #f2f2f2;
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+/* Define styles for table rows */
+tr {
+  border: 1px solid #ddd;
+}
+
+/* Define styles for table data */
+td {
+  padding: 8px;
+}
+
+/* Define styles for table hover effect */
+tr:hover {
+  background-color: #f2f2f2;
+}
+
+/* Define styles for search input */
+#table-search {
+  margin-bottom: 10px;
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+/* Define styles for container */
+.container {
+  margin-top: 20px;
+}
+
+/* Define styles for navbar */
+.navbar {
+  background-color: #f8f9fa;
+  padding: 10px;
+}
+
+/* Define styles for navbar brand */
+.navbar-brand {
+  color: #007bff;
+}
+
+/* Define styles for sign out button */
+.btn {
+  margin-left: 10px;
+}

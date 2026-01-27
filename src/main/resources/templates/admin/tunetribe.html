@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Tune Tribe</title>
+        <!-- Add any necessary stylesheets or scripts -->
+        <style>
+            body {
+                background-color: #F8F2DC;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Tune Tribe</h1>
+        <div>
+            <!-- Display the posted text -->
+            <p th:text="${text}"></p>
+        </div>
+    </body>
+</html>
