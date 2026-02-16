@@ -1,15 +1,395 @@
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
--->
-<html>
-    <head>
-        <title>Tune Tribe</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <div>User Page</div>
-    </body>
+<html lang="en"
+      xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>TuneTribe</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
+          crossorigin="anonymous">
+
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            color: #2c3e50;
+        }
+
+        .sidenav {
+            height: 100vh;
+            width: 240px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background-color: #1f2d3d;
+            padding-top: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidenav h4 {
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .sidenav a {
+            padding: 12px 25px;
+            font-size: 15px;
+            color: #cfd8dc;
+            text-decoration: none;
+            transition: 0.2s ease;
+            margin: 4px 15px;
+            border-radius: 6px;
+        }
+
+        .sidenav a:hover {
+            background-color: #2e4053;
+            color: #ffffff;
+        }
+
+        .logout-form {
+            margin-top: auto;
+            padding: 20px;
+        }
+
+        .logout-btn {
+            width: 100%;
+            background-color: #3498db;
+            border: none;
+            border-radius: 6px;
+            padding: 10px;
+            color: white;
+            font-weight: 500;
+            transition: 0.2s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .main-content {
+            margin-left: 240px;
+            padding: 35px;
+        }
+
+        .page-title {
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 24px;
+        }
+
+        .card-panel {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .card-panel h5 {
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .stat-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .stat-card h3 {
+            margin: 0;
+            font-weight: 700;
+            color: #3498db;
+        }
+
+        .stat-card p {
+            margin: 0;
+            font-size: 13px;
+            color: #6c757d;
+        }
+
+        .post-card {
+            border: 1px solid #eaecef;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            background: #ffffff;
+        }
+
+        .post-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #8a98a5;
+        }
+
+        .post-actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            border: 1px solid #e0e6eb;
+            background: #ffffff;
+            color: #2c3e50;
+            border-radius: 6px;
+            font-size: 12px;
+            padding: 4px 10px;
+        }
+
+        .action-btn:hover {
+            background: #f3f6f9;
+        }
+
+        .edit-form {
+            display: none;
+            margin-top: 12px;
+        }
+
+        .post-content {
+            margin-top: 10px;
+            font-size: 15px;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #8a98a5;
+            padding: 20px 10px;
+        }
+
+        .list-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #edf0f2;
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .badge-pill {
+            background-color: #eaf2f8;
+            color: #3498db;
+            font-weight: 600;
+        }
+
+        .action-link {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .action-link:hover {
+            color: #2980b9;
+        }
+
+        @media (max-width: 992px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="sidenav">
+    <h4>TuneTribe</h4>
+
+    <a th:href="@{/}">Home</a>
+    <a th:href="@{/profile}">My Profile</a>
+    <a th:href="@{/tunetribe-guidelines}">Guidelines</a>
+    <a th:href="@{/tunetribe-copyright}">Copyright</a>
+    
+    <form th:action="@{/logout}" method="post" class="logout-form">
+        <button class="logout-btn" type="submit">Log Out</button>
+    </form>
+</div>
+
+<main class="main-content">
+
+    <h2 class="page-title" th:text="${currentUser}">User</h2>
+
+    <div class="stat-row">
+        <div class="stat-card">
+            <h3 th:text="${totalPosts}"></h3>
+            <p>Total Posts</p>
+        </div>
+        <div class="stat-card">
+            <h3 th:text="${totalFollowers}"></h3>
+            <p>Followers</p>
+        </div>
+        <div class="stat-card">
+            <h3 th:text="${totalFollowing}"></h3>
+            <p>Following</p>
+        </div>
+    </div>
+
+    <div class="content-grid">
+
+        <section>
+            <div class="card-panel">
+                <h5>Share a post</h5>
+                <form th:action="@{/posts}" method="post">
+                    <div class="form-group">
+                        <textarea class="form-control" name="content" rows="3" placeholder="Share what you're listening to..."></textarea>
+                    </div>
+
+                    <div th:if="${currentUserEntity != null and #strings.equalsIgnoreCase(currentUserEntity.role, 'Artist')}">
+                        <div class="form-group">
+                            <input class="form-control" name="musicTitle" placeholder="Track title" />
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" name="musicUrl" placeholder="Track link" />
+                        </div>
+                    </div>
+
+                    <button type="submit" class="logout-btn">Post</button>
+                </form>
+            </div>
+
+            <div class="card-panel">
+                <h5>Music Feed</h5>
+
+                <div th:if="${posts == null || #lists.isEmpty(posts)}" class="empty-state">
+                    No posts yet.
+                </div>
+
+                <div th:each="post : ${posts}" class="post-card">
+                    <div class="post-meta">
+                        <span th:text="${post.user.userName}"></span>
+                        <span th:text="${#temporals.format(post.createdAt, 'MMM dd, yyyy HH:mm')}"></span>
+                    </div>
+                    <div class="post-content" th:text="${post.content}"></div>
+                    <div class="post-content" th:if="${post.musicTitle != null}">
+                        <strong th:text="${post.musicTitle}"></strong>
+                        <span th:if="${post.musicUrl != null}">
+                            · <a th:href="${post.musicUrl}" th:text="${post.musicUrl}"></a>
+                        </span>
+                    </div>
+
+                    <div class="post-actions"
+                         th:if="${currentUserEntity != null and currentUserEntity.id == post.user.id}">
+                        <button type="button" class="action-btn" th:attr="onclick=|toggleEdit(${post.id})|">Edit</button>
+                        <form th:action="@{/posts/{id}/delete(id=${post.id})}" method="post">
+                            <button type="submit" class="action-btn">Delete</button>
+                        </form>
+                    </div>
+
+                    <div class="edit-form" th:attr="id=|edit-form-${post.id}|"
+                         th:if="${currentUserEntity != null and currentUserEntity.id == post.user.id}">
+                        <form th:action="@{/posts/{id}/edit(id=${post.id})}" method="post">
+                            <div class="form-group">
+                                <textarea class="form-control" name="content" rows="3" th:text="${post.content}"></textarea>
+                            </div>
+                            <div th:if="${currentUserEntity != null and #strings.equalsIgnoreCase(currentUserEntity.role, 'Artist')}">
+                                <div class="form-group">
+                                    <input class="form-control" name="musicTitle" placeholder="Track title" th:value="${post.musicTitle}" />
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" name="musicUrl" placeholder="Track link" th:value="${post.musicUrl}" />
+                                </div>
+                            </div>
+                            <div class="post-actions">
+                                <button type="submit" class="action-btn">Save</button>
+                                <button type="button" class="action-btn" th:attr="onclick=|toggleEdit(${post.id})|">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-panel">
+                <h5>Recently Played</h5>
+
+                <div th:if="${recentTracks == null || #lists.isEmpty(recentTracks)}" class="empty-state">
+                    No recent tracks.
+                </div>
+
+                <div th:each="trackPost : ${recentTracks}" class="list-item">
+                    <span th:text="${trackPost.musicTitle}"></span>
+                    <span class="badge badge-pill" th:text="${trackPost.user.userName}"></span>
+                </div>
+            </div>
+        </section>
+
+        <aside>
+            <div class="card-panel">
+                <h5>Suggested Users</h5>
+
+                <div th:if="${suggestedUsers == null || #lists.isEmpty(suggestedUsers)}" class="empty-state">
+                    No suggestions yet.
+                </div>
+
+                <div th:each="person : ${suggestedUsers}" class="list-item">
+                    <span th:text="${person.userName}"></span>
+                    <a class="action-link" th:href="@{/users/{id}(id=${person.id})}">View</a>
+                </div>
+            </div>
+
+            <div class="card-panel">
+                <h5>Trending Artists</h5>
+
+                <div th:if="${trendingArtists == null || #lists.isEmpty(trendingArtists)}" class="empty-state">
+                    No trending artists right now.
+                </div>
+
+                <div th:each="artist : ${trendingArtists}" class="list-item">
+                    <span th:text="${artist.userName}"></span>
+                    <a class="action-link" th:href="@{/users/{id}(id=${artist.id})}">View</a>
+                </div>
+            </div>
+
+            <div class="card-panel">
+                <h5>Community Updates</h5>
+                <div th:if="${updates == null || #lists.isEmpty(updates)}" class="empty-state">
+                    No updates available.
+                </div>
+                <div th:each="update : ${updates}" class="list-item">
+                    <span th:text="${update.content}"></span>
+                    <a class="action-link" th:href="@{/}">Open</a>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+</main>
+
+<script>
+    function toggleEdit(id) {
+        const form = document.getElementById(`edit-form-${id}`);
+        if (!form) {
+            return;
+        }
+        const isHidden = form.style.display === "none" || form.style.display === "";
+        form.style.display = isHidden ? "block" : "none";
+    }
+</script>
+
+</body>
 </html>

@@ -63,6 +63,12 @@ public class AdminController {
         return "redirect:/admin/user"; // Redirect back to the user list page
     }
 
+    @PostMapping("/user/{userId}/make-mod")
+    public String makeModerator(@PathVariable Long userId) {
+        adminService.makeModerator(userId);
+        return "redirect:/admin/user";
+    }
+
     @GetMapping("/artist/{userID}")
     public String deleteArtist(@PathVariable Long userID) {
         adminService.deleteUser(userID);
@@ -81,17 +87,17 @@ public class AdminController {
         return "admin/list-mod";
     }
 
-    @GetMapping("/moderator/{modId}")
-    public String deleteMod(@PathVariable Long modId) {
-        modService.deleteMod(modId);
+    @PostMapping("/moderator/{modId}/remove")
+    public String removeModerator(@PathVariable Long modId) {
+        adminService.removeModerator(modId);
         return "redirect:/admin/moderator";
     }
 
     @GetMapping("/modRequests")
     public String viewRequests(Model model) {
         List<Mod> modRequests = adminService.getAllRequests(); // Assuming you have a service for managing mod requests
-    model.addAttribute("modRequests", modRequests);
-   
+        model.addAttribute("modRequests", modRequests);
+
         return "admin/modRequests";
     }
 

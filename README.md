@@ -33,20 +33,28 @@ Before running the application, ensure you have the following installed:
 
 ## Setup Instructions
 
-### 1. Database Setup
+### 1. Database Setup (MySQL)
 
-1. Start your MySQL server
-2. Create a new database for the project:
+1. Start your MySQL server.
+2. Create the database:
 
    ```sql
    CREATE DATABASE csc340_project;
    ```
 
-3. The application will automatically create the necessary tables through Hibernate (configured with `spring.jpa.hibernate.ddl-auto=update`)
+3. (Optional) Create a dedicated MySQL user (recommended):
 
-### 2. Configure Database Connection (Optional)
+   ```sql
+   CREATE USER 'tunetribe'@'localhost' IDENTIFIED BY 'your_password';
+   GRANT ALL PRIVILEGES ON csc340_project.* TO 'tunetribe'@'localhost';
+   FLUSH PRIVILEGES;
+   ```
 
-If your MySQL setup differs from the default, update [src/main/resources/application.properties](src/main/resources/application.properties):
+4. Hibernate will auto-create tables on first run (`spring.jpa.hibernate.ddl-auto=update`).
+
+### 2. Configure Database Connection
+
+Edit [src/main/resources/application.properties](src/main/resources/application.properties) to match your MySQL credentials:
 
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/csc340_project?useSSL=false
@@ -56,21 +64,21 @@ spring.datasource.password=
 
 ### 3. Build and Run the Application
 
-#### Using Maven Wrapper (macOS/Linux):
+#### macOS/Linux
 
 ```bash
 ./mvnw clean install
 ./mvnw spring-boot:run
 ```
 
-#### Using Maven Wrapper (Windows):
+#### Windows
 
 ```bash
 mvnw.cmd clean install
 mvnw.cmd spring-boot:run
 ```
 
-#### Using Maven (if installed globally):
+#### Maven (if installed globally)
 
 ```bash
 mvn clean install
@@ -79,17 +87,33 @@ mvn spring-boot:run
 
 ### 4. Access the Application
 
-Once the application is running, open your web browser and navigate to:
+Open your browser at:
 
 ```
 http://localhost:8080
 ```
 
-You will be redirected to the login page. New users can register through the registration page.
+You will be redirected to the login page. New users can register using the registration page.
 
-## Default Credentials
+### 5. Create an Admin (Optional)
 
-After initial setup, you may need to create an admin user through the database or application startup configuration. Refer to the User model and AdminService for details on user creation.
+To make a user an admin:
+
+1. Register a normal account in the app.
+2. In MySQL, update the user’s `role` to `Admin` in the `user` table:
+
+```sql
+UPDATE `user`
+SET role = 'Admin'
+WHERE user_name = 'yourUsername';
+```
+
+## Admin Setup
+
+To make a user an admin:
+
+1. Register a normal account in the app.
+2. In MySQL, update the user’s `role` to `Admin` in the `user` table.
 
 ### MySQL Connection Issues
 

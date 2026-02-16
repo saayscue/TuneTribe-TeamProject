@@ -1,110 +1,150 @@
-
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>User List</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
-              integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
-        <script src="../datatable.js"></script>
-        <style>
-            .active {
-                color: green;
-            }
+<html lang="en"
+      xmlns:th="https://www.thymeleaf.org">
 
-            .inactive {
-                color: red;
-            }
-        
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
+          crossorigin="anonymous" />
+
+    <style>
         body {
-            background-color: #F8F2DC;
+            background-color: #f4f6f9;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            color: #2c3e50;
         }
 
+        /* Sidebar */
         .sidenav {
-            height: 100%;
-            width: 200px;
+            height: 100vh;
+            width: 240px;
             position: fixed;
-           
-            background-color: #DEA47E;
-            padding-top: 20px;
+            left: 0;
+            top: 0;
+            background-color: #1f2d3d;
+            padding-top: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidenav h4 {
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 600;
         }
 
         .sidenav a {
-            padding: 8px 8px 8px 32px;
+            padding: 12px 25px;
+            font-size: 15px;
+            color: #cfd8dc;
             text-decoration: none;
-            font-size: 18px;
-            color: white;
-            display: block;
-            transition: 0.3s;
+            transition: 0.2s ease;
+            margin: 4px 15px;
+            border-radius: 6px;
         }
 
         .sidenav a:hover {
-            background-color: #ddd;
-            color: black;
+            background-color: #2e4053;
+            color: #ffffff;
         }
 
-        .active {
-            background-color: #2196F3;
+        /* Logout */
+        .logout-form {
+            margin-top: auto;
+            padding: 20px;
+        }
+
+        .logout-btn {
+            width: 100%;
+            background-color: lightblue;
+            border: none;
+            border-radius: 6px;
+            padding: 10px;
             color: white;
+            font-weight: 500;
+            transition: 0.2s ease;
         }
 
-        .container {
-            margin-left: 200px; /* Same as the width of the sidenav */
+        .logout-btn:hover {
+            background-color: #2980b9;
         }
 
-        @media screen and (max-height: 450px) {
-            .sidenav {
-                padding-top: 15px;
-            }
-
-            .sidenav a {
-                font-size: 18px;
-            }
+        /* Main Content */
+        .main-content {
+            margin-left: 240px;
+            padding: 40px;
         }
+
+        .page-title {
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        /* Status indicators */
+        .status-active {
+            color: #27ae60;
+            font-weight: 500;
+        }
+
+        .status-inactive {
+            color: #e74c3c;
+            font-weight: 500;
+        }
+
+        /* Card */
+        .content-card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
     </style>
 </head>
+
 <body>
-<!-- Side Navbar -->
+
+<!-- Sidebar -->
 <div class="sidenav">
-    <a th:href="@{/admin/home}">Admin</a>
-    
-        <i class="fa fa-caret-down"></i>
-    </button>
-    <div class="dropdown-container">
-        <a href="/admin/tunetribe">TuneTribe</a>
-        <a href="/admin/tunetribe-guidelines">Guidelines</a>
-        <a href="/admin/tunetribe-copyright">Copyright Rules</a>
-      
-    </div>
-    <form th:action="@{/logout}" method="post">
-    <button class="btn mt-3" type="submit" style="background-color: lightblue; border: none; outline: none; margin-left: 25px; color: white; position: absolute; bottom: 20px;">
-        <span style="font-size: 16px;">Log Out</span>
-    </button>
-</form>
+    <h4>TuneTribe Admin</h4>
+
+    <a th:href="@{/admin/home}">Dashboard</a>
+    <a href="/admin/tunetribe">TuneTribe</a>
+    <a href="/admin/tunetribe-guidelines">Guidelines</a>
+    <a href="/admin/tunetribe-copyright">Copyright Rules</a>
+
+    <form th:action="@{/logout}" method="post" class="logout-form">
+        <button class="logout-btn" type="submit">
+            Log Out
+        </button>
+    </form>
 </div>
 
+<!-- Main Content -->
+<div class="main-content">
 
+    <h2 class="page-title">User Management</h2>
 
+    <div class="content-card">
+        <p class="text-muted">
+            Select a section from the sidebar to manage users, moderators, and platform settings.
+        </p>
 
+        <!-- You can insert your user table or dashboard content here -->
 
+    </div>
 
+</div>
 
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
-
-
-
-
-
-
-
-
-
-   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-
-    </body>
-
-
+</body>
 </html>

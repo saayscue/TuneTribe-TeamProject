@@ -18,6 +18,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 
 /**
  *
@@ -33,26 +35,29 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
         requestCache.setMatchingRequestParameterName(null);
+        requestCache.setRequestMatcher(new NegatedRequestMatcher(new AntPathRequestMatcher("/favicon.ico")));
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> authorize
-                .dispatcherTypeMatchers(DispatcherType.FORWARD,
-                        DispatcherType.ERROR).permitAll()
-                .requestMatchers("/register").permitAll()
-                .requestMatchers("/reset-password").permitAll()
-                .requestMatchers("/mod/**").hasAuthority("Mod")
-                .requestMatchers("/admin/**").hasAuthority("Admin")
-                .requestMatchers("/artist/**").hasAuthority("Artist")
-                .anyRequest().authenticated()
-                )
+                        .dispatcherTypeMatchers(DispatcherType.FORWARD,
+                                DispatcherType.ERROR)
+                        .permitAll()
+                        .requestMatchers("/favicon.ico", "/static/**", "/css/**", "/js/**", "/images/**", "/webjars/**")
+                        .permitAll()
+                        .requestMatchers("/register").permitAll()
+                        .requestMatchers("/tunetribe-guidelines", "/tunetribe-copyright").permitAll()
+                        .requestMatchers("/force-logout").permitAll()
+                        .requestMatchers("/reset-password").permitAll()
+                        .requestMatchers("/mod/**").hasAuthority("Mod")
+                        .requestMatchers("/admin/**").hasAuthority("Admin")
+                        .requestMatchers("/artist/**").hasAuthority("Artist")
+                        .anyRequest().authenticated())
                 .formLogin((form) -> form
-                .loginPage("/login")
-                .permitAll()
-                )
+                        .loginPage("/login")
+                        .permitAll())
                 .logout((logout) -> logout.permitAll())
                 .requestCache((cache) -> cache
-                .requestCache(requestCache)
-                );
+                        .requestCache(requestCache));
 
         return http.build();
     }
@@ -76,6 +81,8 @@ public class SecurityConfig {
                 if (auth != null && auth.isAuthenticated()) {
                     if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("Admin"))) {
                         return "/admin/home"; // Redirect admin users to admin page
+                    } else if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("Mod"))) {
+                        return "/mod/home";
                     } else {
                         return "/"; // Redirect regular users to root page
                     }

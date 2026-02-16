@@ -1,5 +1,4 @@
 
-
 package com.assign.TuneTribe.user;
 
 import jakarta.persistence.Entity;
@@ -28,12 +27,12 @@ public class User {
     private String userFName;
     private String userLName;
     private String userEmail;
-    private boolean banned = false;
+    private Boolean banned = false;
     private String userPassword;
     private String role;
 
-
-    public User(String username, String userEmail, boolean banned, String userPassword, String userFName, String userLName, String role) {
+    public User(String username, String userEmail, Boolean banned, String userPassword, String userFName,
+            String userLName, String role) {
         this.userName = username;
         this.userEmail = userEmail;
         this.banned = banned;
@@ -42,7 +41,6 @@ public class User {
         this.userLName = userLName;
         this.role = role;
     }
-    
 
     public String getRole() {
         return role;
@@ -52,7 +50,6 @@ public class User {
         this.role = role;
     }
 
-    
     public String getUserFName() {
         return userFName;
     }
@@ -69,7 +66,6 @@ public class User {
         this.userLName = userLName;
     }
 
-    
     public long getId() {
         return id;
     }
@@ -82,7 +78,7 @@ public class User {
         return userEmail;
     }
 
-    public boolean isBanned() {
+    public Boolean isBanned() {
         return banned;
     }
 
@@ -102,7 +98,7 @@ public class User {
         this.userEmail = userEmail;
     }
 
-    public void setBanned(boolean banned) {
+    public void setBanned(Boolean banned) {
         this.banned = banned;
     }
 
@@ -110,7 +106,4 @@ public class User {
         this.userPassword = userPassword;
     }
 
-    
-    
-    
 }

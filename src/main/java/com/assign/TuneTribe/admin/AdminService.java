@@ -59,8 +59,8 @@ public class AdminService {
     }
 
     public User getUserByUserName(String userName) {
-        return userRepo.findByUserName(userName).orElseThrow(()
-                -> new UsernameNotFoundException(userName + "not found"));
+        return userRepo.findByUserName(userName)
+                .orElseThrow(() -> new UsernameNotFoundException(userName + "not found"));
     }
 
     public void toggleUserBan(Long userId) {
@@ -78,6 +78,24 @@ public class AdminService {
 
     public void deleteUser(long id) {
         userRepo.deleteById(id);
+    }
+
+    public void makeModerator(Long userId) {
+        Optional<User> userOptional = userRepo.findById(userId);
+        userOptional.ifPresent(user -> {
+            user.setRole("Mod");
+            userRepo.save(user);
+        });
+    }
+
+    public void removeModerator(Long userId) {
+        Optional<User> userOptional = userRepo.findById(userId);
+        userOptional.ifPresent(user -> {
+            if ("Mod".equalsIgnoreCase(user.getRole())) {
+                user.setRole("User");
+                userRepo.save(user);
+            }
+        });
     }
 
     public void saveCommunityGuidelines(String guidelinesText) {
