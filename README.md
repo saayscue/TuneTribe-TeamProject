@@ -40,7 +40,7 @@ TuneTribe is a Spring Boot web app that is a music community platform.
    CREATE DATABASE csc340_project;
    ```
 
-3. (Optional) Create a dedicated MySQL user (recommended):
+3. (Optional) Create a dedicated MySQL user OR leave the default root username and no password:
 
    ```sql
    CREATE USER 'tunetribe'@'localhost' IDENTIFIED BY 'your_password';
@@ -59,6 +59,11 @@ spring.datasource.url=jdbc:mysql://localhost:3306/csc340_project?useSSL=false
 spring.datasource.username=root
 spring.datasource.password=
 ```
+
+Since root now has no password, your config should be:
+
+spring.datasource.username=root
+spring.datasource.password= (empty)
 
 ### 3. Build and Run the App
 
