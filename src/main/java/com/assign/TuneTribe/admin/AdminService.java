@@ -99,27 +99,31 @@ public class AdminService {
     }
 
     public void saveCommunityGuidelines(String guidelinesText) {
-        Admin admin = adminRepository.findById(1L).orElse(new Admin()); // Assuming there's only one admin
+        Admin admin = adminRepository.findFirstByOrderByAdminIdAsc();
+        if (admin == null) {
+            admin = new Admin();
+        }
         admin.setCommunityGuidelines(guidelinesText);
         adminRepository.save(admin);
     }
 
     public String getCommunityGuidelines() {
-        return adminRepository.findById(1L)
-                .map(Admin::getCommunityGuidelines)
-                .orElse("");
+        Admin admin = adminRepository.findFirstByOrderByAdminIdAsc();
+        return admin != null ? admin.getCommunityGuidelines() : "";
     }
 
     public void saveCopyRight(String copyrightText) {
-        Admin admin = adminRepository.findById(1L).orElse(new Admin()); // Assuming there's only one admin
+        Admin admin = adminRepository.findFirstByOrderByAdminIdAsc();
+        if (admin == null) {
+            admin = new Admin();
+        }
         admin.setCopyright(copyrightText);
         adminRepository.save(admin);
     }
 
     public String getCopyRight() {
-        return adminRepository.findById(1L)
-                .map(Admin::getCopyright)
-                .orElse("");
+        Admin admin = adminRepository.findFirstByOrderByAdminIdAsc();
+        return admin != null ? admin.getCopyright() : "";
     }
 
     public long getTotalUsers() {

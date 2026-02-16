@@ -125,14 +125,14 @@ public class AppController {
     public String viewGuidelines(Model model) {
         String guidelines = adminService.getCommunityGuidelines();
         model.addAttribute("guidelines", guidelines);
-        return "admin/tunetribe-guidelines";
+        return "guidelines";
     }
 
     @GetMapping("/tunetribe-copyright")
     public String viewCopyright(Model model) {
         String copyright = adminService.getCopyRight();
         model.addAttribute("copyright", copyright);
-        return "admin/tunetribe-copyright";
+        return "copyright";
     }
 
     @GetMapping("/register")
