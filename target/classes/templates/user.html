@@ -7,141 +7,245 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>TuneTribe</title>
 
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
-          crossorigin="anonymous">
+    <link rel="stylesheet" href="/app-theme.css" />
 
     <style>
+        :root {
+            color-scheme: dark;
+            --bg: #0b0f14;
+            --surface: #0f141a;
+            --panel: #151b24;
+            --panel-alt: #111821;
+            --border: #1f2a36;
+            --text: #e9f1f7;
+            --muted: #96a6b5;
+            --accent: #4cc2ff;
+            --accent-strong: #21a7f1;
+            --shadow-sm: 0 6px 16px rgba(7, 10, 16, 0.35);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: #f4f6f9;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
-            color: #2c3e50;
+            background: var(--bg);
+            font-family: "Inter", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: var(--text);
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 240px minmax(0, 1fr) 260px;
+            min-height: 100vh;
+            justify-content: center;
+
         }
 
         .sidenav {
-            height: 100vh;
-            width: 240px;
-            position: fixed;
-            left: 0;
-            top: 0;
-            background-color: #1f2d3d;
-            padding-top: 30px;
+            background: var(--bg);
+            padding: 24px 18px;
             display: flex;
             flex-direction: column;
+            gap: 14px;
+            border-right: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            width: 240px;
         }
 
-        .sidenav h4 {
-            color: #ffffff;
-            text-align: center;
-            margin-bottom: 30px;
+        .brand {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 0.2px;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 12px 16px;
+            border-radius: 999px;
+            background: transparent;
+            transition: 0.2s ease;
+            font-size: 16px;
             font-weight: 600;
         }
 
-        .sidenav a {
-            padding: 12px 25px;
-            font-size: 15px;
-            color: #cfd8dc;
-            text-decoration: none;
-            transition: 0.2s ease;
-            margin: 4px 15px;
-            border-radius: 6px;
-        }
-
-        .sidenav a:hover {
-            background-color: #2e4053;
-            color: #ffffff;
+        .nav-links a:hover {
+            background: #161e2a;
         }
 
         .logout-form {
             margin-top: auto;
-            padding: 20px;
         }
 
         .logout-btn {
             width: 100%;
-            background-color: #3498db;
+            padding: 12px 16px;
             border: none;
-            border-radius: 6px;
-            padding: 10px;
-            color: white;
-            font-weight: 500;
+            border-radius: 999px;
+            background: var(--accent);
+            color: #051522;
+            font-weight: 700;
+            cursor: pointer;
             transition: 0.2s ease;
+            box-shadow: 0 10px 20px rgba(33, 167, 241, 0.25);
         }
 
         .logout-btn:hover {
-            background-color: #2980b9;
+            background: #24344a;
         }
 
         .main-content {
-            margin-left: 240px;
-            padding: 35px;
+            padding: 16px 0 48px;
+            border-left: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+            background: var(--bg);
+        }
+
+        .right-rail {
+            padding: 16px 20px 48px;
+            position: sticky;
+            top: 0;
+            height: fit-content;
+            background: var(--bg);
+            border-left: 1px solid var(--border);
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px 12px;
+            position: sticky;
+            top: 0;
+            background: rgba(11, 15, 20, 0.92);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border);
+            z-index: 5;
         }
 
         .page-title {
-            font-weight: 600;
-            margin-bottom: 25px;
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0;
         }
 
-        .content-grid {
+        .stats {
             display: grid;
-            grid-template-columns: 1fr 320px;
-            gap: 24px;
-        }
-
-        .card-panel {
-            background-color: #ffffff;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-        }
-
-        .card-panel h5 {
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .stat-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 16px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin: 12px 16px 8px;
         }
 
         .stat-card {
-            background: #ffffff;
+            padding: 10px 12px;
             border-radius: 12px;
-            padding: 16px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            box-shadow: none;
             text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
         .stat-card h3 {
-            margin: 0;
-            font-weight: 700;
-            color: #3498db;
+            margin: 0 0 4px;
+            font-size: 20px;
+            color: var(--accent);
         }
 
         .stat-card p {
             margin: 0;
-            font-size: 13px;
-            color: #6c757d;
+            color: var(--muted);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            padding: 0 16px;
+        }
+
+        .panel {
+            padding: 16px;
+            border-radius: 16px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            box-shadow: none;
+        }
+
+        .panel + .panel {
+            margin-top: 12px;
+        }
+
+        .panel h5 {
+            margin: 0 0 12px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .form-control,
+        textarea,
+        input {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: var(--panel-alt);
+            color: var(--text);
+            padding: 12px 14px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .primary-btn {
+            margin-top: 10px;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 999px;
+            background: var(--accent);
+            color: #051522;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .primary-btn:hover {
+            background: var(--accent-strong);
         }
 
         .post-card {
-            border: 1px solid #eaecef;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
-            background: #ffffff;
+            padding: 14px 16px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            background: var(--panel);
+            margin-bottom: 12px;
         }
 
         .post-meta {
             display: flex;
             justify-content: space-between;
-            font-size: 13px;
-            color: #8a98a5;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .post-content {
+            margin-top: 8px;
+            font-size: 14px;
+            line-height: 1.5;
         }
 
         .post-actions {
@@ -151,32 +255,28 @@
         }
 
         .action-btn {
-            border: 1px solid #e0e6eb;
-            background: #ffffff;
-            color: #2c3e50;
-            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text);
+            border-radius: 999px;
             font-size: 12px;
-            padding: 4px 10px;
+            padding: 6px 12px;
+            cursor: pointer;
         }
 
         .action-btn:hover {
-            background: #f3f6f9;
+            background: #1c2734;
         }
 
         .edit-form {
             display: none;
-            margin-top: 12px;
-        }
-
-        .post-content {
             margin-top: 10px;
-            font-size: 15px;
         }
 
         .empty-state {
-            text-align: center;
-            color: #8a98a5;
-            padding: 20px 10px;
+            color: var(--muted);
+            font-size: 13px;
+            padding: 8px 0;
         }
 
         .list-item {
@@ -184,7 +284,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 10px 0;
-            border-bottom: 1px solid #edf0f2;
+            border-bottom: 1px solid var(--border);
         }
 
         .list-item:last-child {
@@ -192,25 +292,61 @@
         }
 
         .badge-pill {
-            background-color: #eaf2f8;
-            color: #3498db;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(76, 194, 255, 0.15);
+            color: var(--accent);
             font-weight: 600;
+            font-size: 12px;
         }
 
         .action-link {
-            color: #3498db;
+            color: var(--accent);
             text-decoration: none;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .action-link:hover {
-            color: #2980b9;
+            color: var(--accent-strong);
         }
 
-        @media (max-width: 992px) {
-            .content-grid {
+        @media (max-width: 1100px) {
+            .layout {
+                grid-template-columns: 240px minmax(0, 1fr);
+            }
+
+            .right-rail {
+                display: none;
+            }
+        }
+
+        @media (max-width: 860px) {
+            .layout {
                 grid-template-columns: 1fr;
+            }
+
+            .sidenav {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+                position: sticky;
+                top: 0;
+                z-index: 10;
+                height: auto;
+            }
+
+            .nav-links {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .main-content,
+            .right-rail {
+                padding: 12px 0 32px;
+                border-left: none;
+                border-right: none;
             }
         }
     </style>
@@ -218,63 +354,59 @@
 
 <body>
 
-<div class="sidenav">
-    <h4>TuneTribe</h4>
-
-    <a th:href="@{/}">Home</a>
-    <a th:href="@{/profile}">My Profile</a>
-    <a th:href="@{/tunetribe-guidelines}">Guidelines</a>
-    <a th:href="@{/tunetribe-copyright}">Copyright</a>
-    
-    <form th:action="@{/logout}" method="post" class="logout-form">
-        <button class="logout-btn" type="submit">Log Out</button>
-    </form>
-</div>
-
-<main class="main-content">
-
-    <h2 class="page-title" th:text="${currentUser}">User</h2>
-
-    <div class="stat-row">
-        <div class="stat-card">
-            <h3 th:text="${totalPosts}"></h3>
-            <p>Total Posts</p>
+<div class="layout">
+    <nav class="sidenav">
+        <div class="brand">TuneTribe</div>
+        <div class="nav-links">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/profile}">My Profile</a>
+            <a th:href="@{/tunetribe-guidelines}">Guidelines</a>
+            <a th:href="@{/tunetribe-copyright}">Copyright</a>
         </div>
-        <div class="stat-card">
-            <h3 th:text="${totalFollowers}"></h3>
-            <p>Followers</p>
-        </div>
-        <div class="stat-card">
-            <h3 th:text="${totalFollowing}"></h3>
-            <p>Following</p>
-        </div>
-    </div>
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <button class="logout-btn" type="submit">Log Out</button>
+        </form>
+    </nav>
 
-    <div class="content-grid">
+    <main class="main-content">
+        <div class="header">
+            <h2 class="page-title" th:text="${currentUser}">User</h2>
+        </div>
 
-        <section>
-            <div class="card-panel">
+        
+            <div class="stats">
+                <div class="stat-card">
+                    <h3 th:text="${totalPosts}"></h3>
+                    <p>Total Posts</p>
+                </div>
+                <div class="stat-card">
+                    <h3 th:text="${totalFollowers}"></h3>
+                    <p>Followers</p>
+                </div>
+                <div class="stat-card">
+                    <h3 th:text="${totalFollowing}"></h3>
+                    <p>Following</p>
+                </div>
+            </div>
+        
+
+        <div class="content-grid">
+            <div class="panel">
                 <h5>Share a post</h5>
                 <form th:action="@{/posts}" method="post">
-                    <div class="form-group">
-                        <textarea class="form-control" name="content" rows="3" placeholder="Share what you're listening to..."></textarea>
-                    </div>
+                    <textarea class="form-control" name="content" rows="3" placeholder="Share what you're listening to..."></textarea>
 
                     <div th:if="${currentUserEntity != null and #strings.equalsIgnoreCase(currentUserEntity.role, 'Artist')}">
-                        <div class="form-group">
-                            <input class="form-control" name="musicTitle" placeholder="Track title" />
-                        </div>
-                        <div class="form-group">
-                            <input class="form-control" name="musicUrl" placeholder="Track link" />
-                        </div>
+                        <input class="form-control" name="musicTitle" placeholder="Track title" />
+                        <input class="form-control" name="musicUrl" placeholder="Track link" style="margin-top:10px;" />
                     </div>
 
-                    <button type="submit" class="logout-btn">Post</button>
+                    <button type="submit" class="primary-btn">Post</button>
                 </form>
             </div>
 
-            <div class="card-panel">
-                <h5>Music Feed</h5>
+            
+              <h3>Music Feed</h3>
 
                 <div th:if="${posts == null || #lists.isEmpty(posts)}" class="empty-state">
                     No posts yet.
@@ -289,7 +421,7 @@
                     <div class="post-content" th:if="${post.musicTitle != null}">
                         <strong th:text="${post.musicTitle}"></strong>
                         <span th:if="${post.musicUrl != null}">
-                            · <a th:href="${post.musicUrl}" th:text="${post.musicUrl}"></a>
+                            · <a th:href="${post.musicUrl}" th:text="${post.musicUrl}" class="action-link"></a>
                         </span>
                     </div>
 
@@ -304,16 +436,10 @@
                     <div class="edit-form" th:attr="id=|edit-form-${post.id}|"
                          th:if="${currentUserEntity != null and currentUserEntity.id == post.user.id}">
                         <form th:action="@{/posts/{id}/edit(id=${post.id})}" method="post">
-                            <div class="form-group">
-                                <textarea class="form-control" name="content" rows="3" th:text="${post.content}"></textarea>
-                            </div>
+                            <textarea class="form-control" name="content" rows="3" th:text="${post.content}"></textarea>
                             <div th:if="${currentUserEntity != null and #strings.equalsIgnoreCase(currentUserEntity.role, 'Artist')}">
-                                <div class="form-group">
-                                    <input class="form-control" name="musicTitle" placeholder="Track title" th:value="${post.musicTitle}" />
-                                </div>
-                                <div class="form-group">
-                                    <input class="form-control" name="musicUrl" placeholder="Track link" th:value="${post.musicUrl}" />
-                                </div>
+                                <input class="form-control" name="musicTitle" placeholder="Track title" th:value="${post.musicTitle}" style="margin-top:10px;" />
+                                <input class="form-control" name="musicUrl" placeholder="Track link" th:value="${post.musicUrl}" style="margin-top:10px;" />
                             </div>
                             <div class="post-actions">
                                 <button type="submit" class="action-btn">Save</button>
@@ -322,63 +448,62 @@
                         </form>
                     </div>
                 </div>
+            
+        </div>
+    </main>
+
+    <aside class="right-rail">
+        <div class="panel">
+            <h5>Recently Played</h5>
+
+            <div th:if="${recentTracks == null || #lists.isEmpty(recentTracks)}" class="empty-state">
+                No recent tracks.
             </div>
 
-            <div class="card-panel">
-                <h5>Recently Played</h5>
-
-                <div th:if="${recentTracks == null || #lists.isEmpty(recentTracks)}" class="empty-state">
-                    No recent tracks.
-                </div>
-
-                <div th:each="trackPost : ${recentTracks}" class="list-item">
-                    <span th:text="${trackPost.musicTitle}"></span>
-                    <span class="badge badge-pill" th:text="${trackPost.user.userName}"></span>
-                </div>
+            <div th:each="trackPost : ${recentTracks}" class="list-item">
+                <span th:text="${trackPost.musicTitle}"></span>
+                <span class="badge-pill" th:text="${trackPost.user.userName}"></span>
             </div>
-        </section>
+        </div>
 
-        <aside>
-            <div class="card-panel">
-                <h5>Suggested Users</h5>
+        <div class="panel">
+            <h5>Suggested Users</h5>
 
-                <div th:if="${suggestedUsers == null || #lists.isEmpty(suggestedUsers)}" class="empty-state">
-                    No suggestions yet.
-                </div>
-
-                <div th:each="person : ${suggestedUsers}" class="list-item">
-                    <span th:text="${person.userName}"></span>
-                    <a class="action-link" th:href="@{/users/{id}(id=${person.id})}">View</a>
-                </div>
+            <div th:if="${suggestedUsers == null || #lists.isEmpty(suggestedUsers)}" class="empty-state">
+                No suggestions yet.
             </div>
 
-            <div class="card-panel">
-                <h5>Trending Artists</h5>
+            <div th:each="person : ${suggestedUsers}" class="list-item">
+                <span th:text="${person.userName}"></span>
+                <a class="action-link" th:href="@{/users/{id}(id=${person.id})}">View</a>
+            </div>
+        </div>
 
-                <div th:if="${trendingArtists == null || #lists.isEmpty(trendingArtists)}" class="empty-state">
-                    No trending artists right now.
-                </div>
+        <div class="panel">
+            <h5>Trending Artists</h5>
 
-                <div th:each="artist : ${trendingArtists}" class="list-item">
-                    <span th:text="${artist.userName}"></span>
-                    <a class="action-link" th:href="@{/users/{id}(id=${artist.id})}">View</a>
-                </div>
+            <div th:if="${trendingArtists == null || #lists.isEmpty(trendingArtists)}" class="empty-state">
+                No trending artists right now.
             </div>
 
-            <div class="card-panel">
-                <h5>Community Updates</h5>
-                <div th:if="${updates == null || #lists.isEmpty(updates)}" class="empty-state">
-                    No updates available.
-                </div>
-                <div th:each="update : ${updates}" class="list-item">
-                    <span th:text="${update.content}"></span>
-                    <a class="action-link" th:href="@{/}">Open</a>
-                </div>
+            <div th:each="artist : ${trendingArtists}" class="list-item">
+                <span th:text="${artist.userName}"></span>
+                <a class="action-link" th:href="@{/users/{id}(id=${artist.id})}">View</a>
             </div>
-        </aside>
-    </div>
+        </div>
 
-</main>
+        <div class="panel">
+            <h5>Community Updates</h5>
+            <div th:if="${updates == null || #lists.isEmpty(updates)}" class="empty-state">
+                No updates available.
+            </div>
+            <div th:each="update : ${updates}" class="list-item">
+                <span th:text="${update.content}"></span>
+                <a class="action-link" th:href="@{/}">Open</a>
+            </div>
+        </div>
+    </aside>
+</div>
 
 <script>
     function toggleEdit(id) {
