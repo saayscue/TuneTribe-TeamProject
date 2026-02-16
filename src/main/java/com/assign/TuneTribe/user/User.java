@@ -5,17 +5,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Column;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  *
  * @author shauna
  */
 @Entity
+@Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -27,11 +27,12 @@ public class User {
     private String userFName;
     private String userLName;
     private String userEmail;
-    private Boolean banned = false;
+    @Column(nullable = false)
+    private boolean banned = false;
     private String userPassword;
     private String role;
 
-    public User(String username, String userEmail, Boolean banned, String userPassword, String userFName,
+    public User(String username, String userEmail, boolean banned, String userPassword, String userFName,
             String userLName, String role) {
         this.userName = username;
         this.userEmail = userEmail;
@@ -78,7 +79,7 @@ public class User {
         return userEmail;
     }
 
-    public Boolean isBanned() {
+    public boolean isBanned() {
         return banned;
     }
 
@@ -98,7 +99,7 @@ public class User {
         this.userEmail = userEmail;
     }
 
-    public void setBanned(Boolean banned) {
+    public void setBanned(boolean banned) {
         this.banned = banned;
     }
 
