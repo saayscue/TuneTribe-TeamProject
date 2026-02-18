@@ -35,8 +35,13 @@ public class AdminController {
     private AdminService adminService;
 
     @GetMapping("/user")
-    public String getUsers(Model model, @RequestParam(name = "continue", required = false) String cont) {
-        model.addAttribute("userList", adminService.getUsers());
+    public String getUsers(Model model,
+            @RequestParam(name = "continue", required = false) String cont,
+            @RequestParam(name = "role", required = false) String role,
+            @RequestParam(name = "status", required = false) String status) {
+        model.addAttribute("userList", adminService.getUsersFiltered(role, status));
+        model.addAttribute("roleFilter", role == null ? "all" : role);
+        model.addAttribute("statusFilter", status == null ? "all" : status);
         return "admin/list-users";
     }
 
@@ -51,9 +56,9 @@ public class AdminController {
         return "admin/tunetribe";
     }
 
-    @GetMapping("/user/{userID}")
-    public String deleteUser(@PathVariable Long userID) {
-        adminService.deleteUser(userID);
+    @GetMapping("/user/{userId}")
+    public String deleteUser(@PathVariable("userId") Long userId) {
+        adminService.deleteUser(userId);
         return "redirect:/admin/user";
     }
 
@@ -90,7 +95,7 @@ public class AdminController {
     @PostMapping("/moderator/{modId}/remove")
     public String removeModerator(@PathVariable Long modId) {
         adminService.removeModerator(modId);
-        return "redirect:/admin/moderator";
+        return "redirect:/admin/user";
     }
 
     @GetMapping("/modRequests")

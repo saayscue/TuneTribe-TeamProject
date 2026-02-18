@@ -145,8 +145,6 @@
             color: #6c757d;
         }
 
-
-
         .post-card {
             border: 1px solid #eaecef;
             border-radius: 12px;
@@ -162,10 +160,27 @@
             color: #8a98a5;
         }
 
+        .post-meta span:first-child {
+            font-size: 16px;
+            font-weight: 700;
+
+        }
+
+        .action-link {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .action-link:hover {
+            text-decoration: underline;
+        }
+
         .post-actions {
             margin-top: 10px;
             display: flex;
             gap: 8px;
+            justify-content: flex-end;
         }
 
         .action-btn {
@@ -188,7 +203,7 @@
 
         .post-content {
             margin-top: 10px;
-            font-size: 15px;
+            font-size: 16px;
         }
 
         .empty-state {
@@ -201,18 +216,46 @@
 
 <body>
 
-<nav class="sidenav">
-    <div class="brand">TuneTribe</div>
-    <div class="nav-links">
-        <a th:href="@{/}">Home</a>
-        <a th:href="@{/profile}">My Profile</a>
-        <a th:href="@{/tunetribe-guidelines}">Guidelines</a>
-        <a th:href="@{/tunetribe-copyright}">Copyright</a>
-    </div>
-    <form th:action="@{/logout}" method="post" class="logout-form">
-        <button class="logout-btn" type="submit">Log Out</button>
-    </form>
-</nav>
+    <nav class="sidenav" th:if="${isAdmin}">
+        <div class="brand" style="margin-bottom: 20px; margin-top: 3px;">TuneTribe Admin</div>
+        <div class="nav-links">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/admin/home}">Dashboard</a>
+            <a th:href="@{/profile}">My Profile</a>
+            <a th:href="@{/admin/community-guidelines}">Community Guidelines</a>
+            <a th:href="@{/admin/copyright-rules}">Copyright Rules</a>
+        </div>
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <button class="logout-btn" type="submit">Log Out</button>
+        </form>
+    </nav>
+
+    <nav class="sidenav" th:if="${isMod}" style="margin-bottom: -1px;">
+        <div class="brand" >TuneTribe Mod</div>
+        <div class="nav-links">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/mod/home}">Dashboard</a>
+            <a th:href="@{/profile}">My Profile</a>
+            <a th:href="@{/tunetribe-guidelines}">Community Guidelines</a>
+            <a th:href="@{/tunetribe-copyright}">Copyright Rules</a>
+        </div>
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <button class="logout-btn" type="submit">Log Out</button>
+        </form>
+    </nav>
+
+    <nav class="sidenav" th:if="${!isAdmin and !isMod}">
+        <div class="brand" style="margin-bottom: 20px; margin-top: 3px;">TuneTribe</div>
+        <div class="nav-links">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/profile}">My Profile</a>
+            <a th:href="@{/tunetribe-guidelines}">Community Guidelines</a>
+            <a th:href="@{/tunetribe-copyright}">Copyright Rules</a>
+        </div>
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <button class="logout-btn" type="submit">Log Out</button>
+        </form>
+    </nav>
 
 <main class="main-content">
 
@@ -249,54 +292,44 @@
         </div>
     </div>
 
-    <div class="card-panel">
-        <h5>My Posts</h5>
+    <h3 style="margin-top: 10px;">Posts</h3>
 
-        <div th:if="${posts == null || #lists.isEmpty(posts)}" class="empty-state">
-            No posts yet.
+    <div th:if="${posts == null || #lists.isEmpty(posts)}" class="empty-state">
+        No posts yet.
+    </div>
+
+    <div th:each="post : ${posts}" class="post-card">
+        <div class="post-meta">
+            <a class="action-link" th:href="@{/users/{id}(id=${post.user.id})}" th:text="${post.user.userName}"></a>
+            <span th:text="${#temporals.format(post.createdAt, 'MMM dd, yyyy HH:mm')}"></span>
+        </div>
+        <div class="post-content" th:text="${post.content}"></div>
+        <div class="post-content" th:if="${post.musicTitle != null}">
+            <strong th:text="${post.musicTitle}"></strong>
+            <span th:if="${post.musicUrl != null}">
+                · <a th:href="${post.musicUrl}" th:text="${post.musicUrl}" class="action-link"></a>
+            </span>
         </div>
 
-        <div th:each="post : ${posts}" class="post-card">
-            <div class="post-meta">
-                <span th:text="${post.user.userName}"></span>
-                <span th:text="${#temporals.format(post.createdAt, 'MMM dd, yyyy HH:mm')}"></span>
-            </div>
-            <div class="post-content" th:text="${post.content}"></div>
-            <div class="post-content" th:if="${post.musicTitle != null}">
-                <strong th:text="${post.musicTitle}"></strong>
-                <span th:if="${post.musicUrl != null}">
-                    · <a th:href="${post.musicUrl}" th:text="${post.musicUrl}"></a>
-                </span>
-            </div>
+        <div class="post-actions" th:if="${isOwnProfile}">
+            <button type="button" class="action-btn" th:attr="onclick=|toggleEdit(${post.id})|">Edit</button>
+            <form th:action="@{/posts/{id}/delete(id=${post.id})}" method="post">
+                <button type="submit" class="action-btn">Delete</button>
+            </form>
+        </div>
 
-            <div class="post-actions"
-                 th:if="${currentUserEntity != null and currentUserEntity.id == post.user.id}">
-                <button type="button" class="action-btn" th:attr="onclick=|toggleEdit(${post.id})|">Edit</button>
-                <form th:action="@{/posts/{id}/delete(id=${post.id})}" method="post">
-                    <button type="submit" class="action-btn">Delete</button>
-                </form>
-            </div>
-
-            <div class="edit-form" th:attr="id=|edit-form-${post.id}|"
-                 th:if="${currentUserEntity != null and currentUserEntity.id == post.user.id}">
-                <form th:action="@{/posts/{id}/edit(id=${post.id})}" method="post">
-                    <div class="form-group">
-                        <textarea class="form-control" name="content" rows="3" th:text="${post.content}"></textarea>
-                    </div>
-                    <div th:if="${currentUserEntity != null and #strings.equalsIgnoreCase(currentUserEntity.role, 'Artist')}">
-                        <div class="form-group">
-                            <input class="form-control" name="musicTitle" placeholder="Track title" th:value="${post.musicTitle}" />
-                        </div>
-                        <div class="form-group">
-                            <input class="form-control" name="musicUrl" placeholder="Track link" th:value="${post.musicUrl}" />
-                        </div>
-                    </div>
-                    <div class="post-actions">
-                        <button type="submit" class="action-btn">Save</button>
-                        <button type="button" class="action-btn" th:attr="onclick=|toggleEdit(${post.id})|">Cancel</button>
-                    </div>
-                </form>
-            </div>
+        <div class="edit-form" th:attr="id=|edit-form-${post.id}|" th:if="${isOwnProfile}">
+            <form th:action="@{/posts/{id}/edit(id=${post.id})}" method="post">
+                <textarea class="form-control" name="content" rows="3" th:text="${post.content}"></textarea>
+                <div th:if="${currentUserEntity != null and (#strings.equalsIgnoreCase(currentUserEntity.role, 'Artist') or #strings.equalsIgnoreCase(currentUserEntity.originalRole, 'Artist'))}">
+                    <input class="form-control" name="musicTitle" placeholder="Track title" th:value="${post.musicTitle}" style="margin-top:10px;" />
+                    <input class="form-control" name="musicUrl" placeholder="Track link" th:value="${post.musicUrl}" style="margin-top:10px;" />
+                </div>
+                <div class="post-actions">
+                    <button type="submit" class="action-btn">Save</button>
+                    <button type="button" class="action-btn" th:attr="onclick=|toggleEdit(${post.id})|">Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
 

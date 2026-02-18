@@ -82,52 +82,82 @@
 
         .page-wrapper {
             margin-left: 240px;
-            padding: 40px;
+            padding: 60px 20px;
+            display: flex;
+            justify-content: center;
         }
 
         .guidelines-card {
+            max-width: 1100px;
             width: 100%;
-            background: var(--panel);
+            margin: 0 auto;
+            background-color: #1f2d3d;
             padding: 40px;
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            box-shadow: none;
-            text-align: center;
-            height: 70vh;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            height: 640px;
             overflow: auto;
         }
 
         .page-title {
-            font-weight: 700;
+            font-weight: 600;
             margin-bottom: 25px;
-            color: var(--text);
-            border-bottom: 1px solid var(--border);
+            color: #e9f1f7;
+            text-align: center;
+            border-bottom: 2px solid #eaecef;
             padding-bottom: 10px;
         }
 
         .guidelines-content {
-            font-size: 16px;
+            font-size: 17px;
             line-height: 1.7;
-            color: var(--muted);
+            color: #cbd5e1;
             white-space: pre-line;
-            text-align: left;
         }
     </style>
 </head>
 <body>
 
-<nav class="sidenav">
-    <div class="brand">TuneTribe</div>
-    <div class="nav-links">
-        <a th:href="@{/}">Home</a>
-        <a th:href="@{/profile}">My Profile</a>
-        <a th:href="@{/tunetribe-guidelines}">Guidelines</a>
-        <a th:href="@{/tunetribe-copyright}">Copyright</a>
-    </div>
-    <form th:action="@{/logout}" method="post" class="logout-form">
-        <button class="logout-btn" type="submit">Log Out</button>
-    </form>
-</nav>
+    <nav class="sidenav" th:if="${isAdmin}">
+        <div class="brand" style="margin-bottom: 20px; margin-top: 3px;">TuneTribe Admin</div>
+        <div class="nav-links">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/admin/home}">Dashboard</a>
+            <a th:href="@{/profile}">My Profile</a>
+            <a th:href="@{/admin/community-guidelines}">Community Guidelines</a>
+            <a th:href="@{/admin/copyright-rules}">Copyright Rules</a>
+        </div>
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <button class="logout-btn" type="submit">Log Out</button>
+        </form>
+    </nav>
+
+    <nav class="sidenav" th:if="${isMod}" style="margin-bottom: -1px;">
+        <div class="brand" ]>TuneTribe Mod</div>
+        <div class="nav-links">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/mod/home}">Dashboard</a>
+            <a th:href="@{/profile}">My Profile</a>
+            <a th:href="@{/tunetribe-guidelines}">Community Guidelines</a>
+            <a th:href="@{/tunetribe-copyright}">Copyright Rules</a>
+        </div>
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <button class="logout-btn" type="submit">Log Out</button>
+        </form>
+    </nav>
+
+    <nav class="sidenav" th:if="${!isAdmin and !isMod}">
+        <div class="brand" style="margin-bottom: 20px; margin-top: 3px;">TuneTribe</div>
+        <div class="nav-links">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/profile}">My Profile</a>
+            <a th:href="@{/tunetribe-guidelines}">Community Guidelines</a>
+            <a th:href="@{/tunetribe-copyright}">Copyright Rules</a>
+        </div>
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <button class="logout-btn" type="submit">Log Out</button>
+        </form>
+    </nav>
 
 <div class="page-wrapper">
     <div class="guidelines-card">

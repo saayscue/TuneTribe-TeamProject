@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -25,8 +26,13 @@ public class ModController {
     }
 
     @GetMapping("/users")
-    public String users(Model model) {
-        model.addAttribute("userList", modService.getUsersForModeration());
+    public String users(
+            @RequestParam(defaultValue = "all") String role,
+            @RequestParam(defaultValue = "all") String status,
+            Model model) {
+        model.addAttribute("userList", modService.getUsersForModeration(role, status));
+        model.addAttribute("roleFilter", role);
+        model.addAttribute("statusFilter", status);
         return "mod/list-users";
     }
 
@@ -37,8 +43,13 @@ public class ModController {
     }
 
     @GetMapping("/posts")
-    public String posts(Model model) {
-        model.addAttribute("postList", modService.getPostsForModeration());
+    public String posts(
+            @RequestParam(defaultValue = "all") String role,
+            @RequestParam(defaultValue = "all") String status,
+            Model model) {
+        model.addAttribute("postList", modService.getPostsForModeration(role, status));
+        model.addAttribute("roleFilter", role);
+        model.addAttribute("statusFilter", status);
         return "mod/list-posts";
     }
 
@@ -49,8 +60,13 @@ public class ModController {
     }
 
     @GetMapping("/follows")
-    public String follows(Model model) {
-        model.addAttribute("followList", modService.getFollowsForModeration());
+    public String follows(
+            @RequestParam(defaultValue = "all") String role,
+            @RequestParam(defaultValue = "all") String status,
+            Model model) {
+        model.addAttribute("followList", modService.getFollowsForModeration(role, status));
+        model.addAttribute("roleFilter", role);
+        model.addAttribute("statusFilter", status);
         return "mod/list-follows";
     }
 

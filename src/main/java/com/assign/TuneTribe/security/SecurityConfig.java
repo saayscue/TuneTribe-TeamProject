@@ -42,7 +42,8 @@ public class SecurityConfig {
                         .dispatcherTypeMatchers(DispatcherType.FORWARD,
                                 DispatcherType.ERROR)
                         .permitAll()
-                        .requestMatchers("/favicon.ico", "/static/**", "/css/**", "/js/**", "/images/**", "/webjars/**")
+                        .requestMatchers("/favicon.ico", "/app-theme.css", "/static/**", "/css/**", "/js/**",
+                                "/images/**", "/webjars/**")
                         .permitAll()
                         .requestMatchers("/register").permitAll()
                         .requestMatchers("/tunetribe-guidelines", "/tunetribe-copyright").permitAll()
@@ -54,6 +55,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
                 .formLogin((form) -> form
                         .loginPage("/login")
+                        .successHandler(successHandler())
                         .permitAll())
                 .logout((logout) -> logout.permitAll())
                 .requestCache((cache) -> cache

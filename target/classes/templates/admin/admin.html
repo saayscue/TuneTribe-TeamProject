@@ -15,10 +15,10 @@
 
     <style>
         body {
-            background-color: #f4f6f9;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            font-family: "Inter", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
-            color: #2c3e50;
+            color: var(--text);
         }
 
         /* Sidebar */
@@ -45,13 +45,13 @@
         .nav-links {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 10px;
         }
 
         .nav-links a {
             color: var(--text);
             text-decoration: none;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border-radius: 999px;
             background: transparent;
             transition: 0.2s ease;
@@ -78,7 +78,6 @@
             color: #051522;
             font-weight: 700;
             transition: 0.2s ease;
-            box-shadow: 0 10px 20px rgba(33, 167, 241, 0.25);
         }
 
         .logout-btn:hover {
@@ -104,6 +103,7 @@
             padding: 25px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             text-align: center;
+            
         }
 
         .stats-card h2 {
@@ -124,6 +124,7 @@
             padding: 25px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             transition: 0.2s ease;
+            margin-bottom: 20px;
         }
 
         .dashboard-card:hover {
@@ -157,10 +158,11 @@
 <!-- Sidebar -->
 <nav class="sidenav">
     <div class="brand">TuneTribe Admin</div>
-    <div class="nav-links">
+    <div class="nav-links"> 
+        <a href="/">Home</a>
         <a th:href="@{/admin/home}">Dashboard</a>
-        <a href="/admin/tunetribe">TuneTribe</a>
-        <a href="/admin/tunetribe-guidelines">Guidelines</a>
+        <a href="/profile">My Profile</a>
+        <a href="/admin/tunetribe-guidelines">Community Guidelines</a>
         <a href="/admin/tunetribe-copyright">Copyright Rules</a>
     </div>
     <form th:action="@{/logout}" method="post" class="logout-form">
@@ -173,66 +175,24 @@
 
     <h2 class="page-title">Admin Dashboard</h2>
 
-    <!-- Stats Row -->
-    <div class="row mb-4">
-        <div class="col-md-4">
-            <div class="stats-card">
-                <h2>[[${totalUsers}]]</h2>
-                <p>Total Registered Users</p>
-            </div>
-        </div>
+    <div class="stats-card" style="color: rgb(99, 115, 125); margin-bottom: 25px">
+        <h2>[[${totalUsers}]]</h2>
+        <p>Total Registered Users</p>
     </div>
 
-    <!-- Row 1 -->
-    <div class="row mb-4">
-
-        <div class="col-md-4">
-            <div class="dashboard-card">
-                <h5>User List</h5>
-                <a href="/admin/user" class="btn-primary-custom">View</a>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="dashboard-card">
-                <h5>Artist List</h5>
-                <a href="/admin/artist" class="btn-primary-custom">View</a>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="dashboard-card">
-                <h5>Mod List</h5>
-                <a href="/admin/moderator" class="btn-primary-custom">View</a>
-            </div>
-        </div>
-
+    <div class="dashboard-card">
+        <h5>Full User List</h5>
+        <a href="/admin/user" class="btn-primary-custom">View</a>
     </div>
 
-    <!-- Row 2 -->
-    <div class="row">
+    <div class="dashboard-card">
+        <h5>Edit Community Guidelines</h5>
+        <a href="/admin/community-guidelines" class="btn-primary-custom">View</a>
+    </div>
 
-        <div class="col-md-4">
-            <div class="dashboard-card">
-                <h5>Mod Requests</h5>
-                <a href="/admin/modRequests" class="btn-primary-custom">View</a>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="dashboard-card">
-                <h5>Community Guidelines</h5>
-                <a href="/admin/community-guidelines" class="btn-primary-custom">View</a>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="dashboard-card">
-                <h5>Copyright Rules</h5>
-                <a href="/admin/copyright-rules" class="btn-primary-custom">View</a>
-            </div>
-        </div>
-
+    <div class="dashboard-card">
+        <h5>Edit Copyright Rules</h5>
+        <a href="/admin/copyright-rules" class="btn-primary-custom">View</a>
     </div>
 
 </div>

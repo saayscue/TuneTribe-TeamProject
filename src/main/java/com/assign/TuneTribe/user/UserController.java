@@ -43,6 +43,10 @@ public class UserController {
         if (Boolean.TRUE.equals(user.isBanned())) {
             return "redirect:/force-logout";
         }
+        boolean isAdmin = auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("Admin"));
+        boolean isMod = auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("Mod"));
+        model.addAttribute("isAdmin", isAdmin);
+        model.addAttribute("isMod", isMod);
         model.addAttribute("profileUser", user);
         model.addAttribute("posts", postService.getPostsForUser(user));
         model.addAttribute("totalPosts", postService.countPostsForUser(user));
@@ -71,6 +75,12 @@ public class UserController {
             return "redirect:/force-logout";
         }
 
+        boolean isAdmin = auth != null
+                && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("Admin"));
+        boolean isMod = auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("Mod"));
+
+        model.addAttribute("isAdmin", isAdmin);
+        model.addAttribute("isMod", isMod);
         model.addAttribute("profileUser", user);
         model.addAttribute("posts", postService.getPostsForUser(user));
         model.addAttribute("totalPosts", postService.countPostsForUser(user));

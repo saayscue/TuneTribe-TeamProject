@@ -21,39 +21,45 @@
             color: #2c3e50;
         }
 
-        /* Sidebar */
         .sidenav {
             height: 100vh;
             width: 240px;
             position: fixed;
             left: 0;
             top: 0;
-            background-color: #1f2d3d;
-            padding-top: 30px;
+            background: var(--bg);
+            padding: 24px 18px;
             display: flex;
             flex-direction: column;
+            gap: 14px;
+            border-right: 1px solid var(--border);
         }
 
-        .sidenav h4 {
-            color: white;
-            text-align: center;
-            margin-bottom: 30px;
+        .brand {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 0.2px;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 12px 16px;
+            border-radius: 999px;
+            background: transparent;
+            transition: 0.2s ease;
+            font-size: 16px;
             font-weight: 600;
         }
 
-        .sidenav a {
-            padding: 12px 25px;
-            font-size: 15px;
-            color: #cfd8dc;
-            text-decoration: none;
-            margin: 4px 15px;
-            border-radius: 6px;
-            transition: 0.2s ease;
-        }
-
-        .sidenav a:hover {
-            background-color: #2e4053;
-            color: #ffffff;
+        .nav-links a:hover {
+            background: #161e2a;
         }
 
         /* Logout */
@@ -80,21 +86,28 @@
         /* Main Content */
         .main-content {
             margin-left: 240px;
-            padding: 40px;
+            padding: 60px 40px;
+            display: flex;
+            justify-content: center;
         }
 
         .page-title {
             font-weight: 600;
             margin-bottom: 30px;
+            color: #e9f1f7;
+            text-align: center;
         }
 
         /* Card */
         .content-card {
-            background-color: white;
+            background-color: #1f2d3d;
             border-radius: 8px;
-            padding: 30px;
+            padding: 40px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            max-width: 800px;
+            max-width: 1100px;
+            width: 100%;
+            height: 640px;
+            overflow: auto;
         }
 
         textarea {
@@ -125,6 +138,11 @@
             border-radius: 6px;
         }
 
+        .button-group {
+            margin-top: 20px;
+            text-align: right;
+        }
+
     </style>
 </head>
 
@@ -134,24 +152,30 @@
 <div class="sidenav">
     <h4>TuneTribe Admin</h4>
 
-    <a th:href="@{/admin/home}">Dashboard</a>
-    <a href="/admin/tunetribe">TuneTribe</a>
-    <a href="/admin/tunetribe-guidelines">Guidelines</a>
-    <a href="/admin/tunetribe-copyright">Copyright Rules</a>
+    <nav class="sidenav" style="margin-bottom: -1px;">
+        <div class="brand">TuneTribe Admin</div>
+        <div class="nav-links">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/admin/home}">Dashboard</a>
+            <a th:href="@{/profile}">My Profile</a>
+            <a th:href="@{/admin/community-guidelines}">Community Guidelines</a>
+            <a th:href="@{/admin/copyright-rules}">Copyright Rules</a>
+        </div>
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <button class="logout-btn" type="submit">Log Out</button>
+        </form>
+    </nav>
 
     <form th:action="@{/logout}" method="post" class="logout-form">
-        <button class="logout-btn" type="submit">
-            Log Out
-        </button>
+        <button class="logout-btn" type="submit">Log Out</button>
     </form>
 </div>
 
 <!-- Main Content -->
 <div class="main-content">
 
-    <h2 class="page-title">Edit Copyright Rules</h2>
-
     <div class="content-card">
+        <h2 class="page-title">Edit Copyright Rules</h2>
         <form th:action="@{/admin/save-copyright-rules}" method="post">
 
             <textarea name="copyright"
@@ -159,7 +183,7 @@
                       th:text="${copyright}"
                       readonly></textarea>
 
-            <div class="mt-3">
+            <div class="button-group">
                 <button type="button"
                         id="editButton"
                         class="btn btn-primary">

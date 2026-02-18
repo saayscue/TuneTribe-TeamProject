@@ -15,48 +15,75 @@
 
     <style>
         body {
-            background-color: #f4f6f9;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            font-family: "Inter", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
-            color: #2c3e50;
+            color: var(--text);
         }
 
-        /* Sidebar */
         .sidenav {
             height: 100vh;
             width: 240px;
             position: fixed;
             left: 0;
             top: 0;
-            background-color: #1f2d3d;
-            padding-top: 30px;
+            background: var(--bg);
+            padding: 24px 18px;
             display: flex;
             flex-direction: column;
+            gap: 14px;
+            border-right: 1px solid var(--border);
         }
 
-        .sidenav h4 {
-            color: #ffffff;
-            text-align: center;
-            margin-bottom: 30px;
+        .brand {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 0.2px;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: transparent;
+            transition: 0.2s ease;
+            font-size: 16px;
             font-weight: 600;
         }
 
-        .sidenav a {
-            padding: 12px 25px;
-            font-size: 15px;
-            color: #cfd8dc;
-            text-decoration: none;
-            transition: 0.2s ease;
-            margin: 4px 15px;
-            border-radius: 6px;
+        .nav-links a:hover {
+            background: #161e2a;
         }
 
-        .sidenav a:hover {
-            background-color: #2e4053;
-            color: #ffffff;
+        .main-content {
+            margin-left: 240px;
+            padding: 40px;
         }
 
-        /* Logout */
+        .table-card {
+            background-color: #1f2d3d;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        tbody tr:hover {
+            background-color: #18232f;
+        }
+
+        .btn-sm {
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-size: 12px;
+        }
+
         .logout-form {
             margin-top: auto;
             padding: 20px;
@@ -64,17 +91,17 @@
 
         .logout-btn {
             width: 100%;
-            background-color: lightblue;
+            padding: 12px 16px;
             border: none;
-            border-radius: 6px;
-            padding: 10px;
-            color: white;
-            font-weight: 500;
+            border-radius: 999px;
+            background: var(--accent);
+            color: #051522;
+            font-weight: 700;
             transition: 0.2s ease;
         }
 
         .logout-btn:hover {
-            background-color: #2980b9;
+            background: var(--accent-strong);
         }
 
         /* Main Content */
@@ -104,7 +131,7 @@
 
         /* Card */
         .table-card {
-            background-color: #ffffff;
+            background-color: #1f2d3d;
             border-radius: 8px;
             padding: 25px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
@@ -120,7 +147,7 @@
         }
 
         tbody tr:hover {
-            background-color: #f8f9fb;
+            background-color: #18232f;
         }
 
         td {
@@ -167,6 +194,7 @@
             border-radius: 20px;
             padding: 6px 15px;
             font-size: 13px;
+            color: red;
         }
 
     </style>
@@ -177,11 +205,12 @@
 <!-- Sidebar -->
 <div class="sidenav">
     <h4>TuneTribe Admin</h4>
-
-    <a th:href="@{/admin/home}">Dashboard</a>
-    <a href="/admin/tunetribe">TuneTribe</a>
-    <a href="/admin/tunetribe-guidelines">Guidelines</a>
-    <a href="/admin/tunetribe-copyright">Copyright Rules</a>
+  <div class="nav-links"> 
+         <a href="/">Home</a>
+        <a th:href="@{/admin/home}">Dashboard</a>
+        <a href="/admin/tunetribe-guidelines">Community Guidelines</a>
+        <a href="/admin/tunetribe-copyright">Copyright Rules</a>
+    </div>
 
     <form th:action="@{/logout}" method="post" class="logout-form">
         <button class="logout-btn" type="submit">
@@ -212,7 +241,7 @@
                         <th>Email</th>
                         <th>Status</th>
                         <th>Profile</th>
-                        <th>Actions</th>
+                        <th>Remove</th>
                     </tr>
                 </thead>
 
@@ -225,11 +254,20 @@
                         <td th:text="${user.userEmail}"></td>
 
                         <!-- Status Badge -->
-                        <td>
+                             <td>
                             <span th:if="${!user.banned}" class="badge-active">Active</span>
                             <span th:if="${user.banned}" class="badge-banned">Banned</span>
-                        </td>
 
+                            <form th:action="@{/admin/artist/{userId}/toggle-ban(userId=${user.id})}"
+                                  method="post"
+                                  style="display:inline;">
+                                <button class="btn btn-outline-secondary btn-sm ml-2"
+                                        type="submit"
+                                        th:text="${user.banned ? 'Unban' : 'Ban'}">
+                                </button>
+                            </form>
+                        </td>
+                        
                         <td>
                             <a th:href="@{/users/{id}(id=${user.id})}"
                                class="btn btn-outline-primary btn-sm">
@@ -237,18 +275,7 @@
                             </a>
                         </td>
 
-                        <!-- Ban / Unban -->
                         <td class="d-flex">
-
-                            <form th:action="@{/admin/artist/{userId}/toggle-ban(userId=${user.id})}"
-                                  method="post"
-                                  style="margin-right: 10px;">
-
-                                <button type="submit"
-                                        th:class="${user.banned} ? 'btn-unban' : 'btn-ban'"
-                                        th:text="${user.banned} ? 'Unban' : 'Ban'">
-                                </button>
-                            </form>
 
                             <a th:href="@{/admin/artist/{userId}(userId=${user.id})}"
                                class="btn btn-danger">

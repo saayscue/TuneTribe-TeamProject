@@ -32,11 +32,35 @@ public class AdminService {
     }
 
     public List<User> getUsers() {
+        return getUsersFiltered(null, null);
+    }
+
+    public List<User> getUsersFiltered(String role, String status) {
         List<User> allUsers = userRepo.findAll();
+
         return allUsers.stream()
-                .filter(user -> !user.getRole().equals("Admin"))
-                .filter(user -> !user.getRole().equals("Mod"))
-                .filter(user -> !user.getRole().equals("Artist"))
+                .filter(user -> user.getRole() != null)
+                .filter(user -> !user.getRole().equalsIgnoreCase("Admin"))
+                .filter(user -> {
+                    if (role == null || role.isBlank() || role.equalsIgnoreCase("all")) {
+                        return user.getRole().equalsIgnoreCase("User")
+                                || user.getRole().equalsIgnoreCase("Artist")
+                                || user.getRole().equalsIgnoreCase("Mod");
+                    }
+                    return user.getRole().equalsIgnoreCase(role);
+                })
+                .filter(user -> {
+                    if (status == null || status.isBlank() || status.equalsIgnoreCase("all")) {
+                        return true;
+                    }
+                    if (status.equalsIgnoreCase("active")) {
+                        return !user.isBanned();
+                    }
+                    if (status.equalsIgnoreCase("banned")) {
+                        return user.isBanned();
+                    }
+                    return true;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -83,6 +107,9 @@ public class AdminService {
     public void makeModerator(Long userId) {
         Optional<User> userOptional = userRepo.findById(userId);
         userOptional.ifPresent(user -> {
+            if (user.getOriginalRole() == null || user.getOriginalRole().isBlank()) {
+                user.setOriginalRole(user.getRole());
+            }
             user.setRole("Mod");
             userRepo.save(user);
         });
@@ -92,7 +119,13 @@ public class AdminService {
         Optional<User> userOptional = userRepo.findById(userId);
         userOptional.ifPresent(user -> {
             if ("Mod".equalsIgnoreCase(user.getRole())) {
-                user.setRole("User");
+                String previousRole = user.getOriginalRole();
+                if (previousRole != null && !previousRole.isBlank() && !"Mod".equalsIgnoreCase(previousRole)) {
+                    user.setRole(previousRole);
+                } else {
+                    user.setRole("User");
+                }
+                user.setOriginalRole(null);
                 userRepo.save(user);
             }
         });

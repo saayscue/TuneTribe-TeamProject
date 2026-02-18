@@ -47,8 +47,7 @@
             background: var(--bg);
             padding: 24px 18px;
             display: flex;
-            flex-direction: column;
-            gap: 14px;
+            flex-direction: column;       
             border-right: 1px solid var(--border);
             position: sticky;
             top: 0;
@@ -65,13 +64,13 @@
         .nav-links {
             display: flex;
             flex-direction: column;
-            gap: 13px;
+            gap: 15px;
         }
 
         .nav-links a {
             color: var(--text);
             text-decoration: none;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border-radius: 999px;
             background: transparent;
             transition: 0.2s ease;
@@ -85,23 +84,24 @@
 
         .logout-form {
             margin-top: auto;
+            padding: 20px;
         }
 
         .logout-btn {
             width: 100%;
-            padding: 12px 16px;
+            padding: 15px;
             border: none;
             border-radius: 999px;
             background: var(--accent);
             color: #051522;
-            font-weight: 700;
-            cursor: pointer;
+            font-weight: 900;
+            font-size: 15.5px;
             transition: 0.2s ease;
-            box-shadow: 0 10px 20px rgba(33, 167, 241, 0.25);
+            margin-bottom: 4px;
         }
 
         .logout-btn:hover {
-            background: #24344a;
+            background: var(--accent-strong);
         }
 
         .main-content {
@@ -139,41 +139,13 @@
             margin: 0;
         }
 
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin: 12px 16px 8px;
-        }
-
-        .stat-card {
-            padding: 10px 12px;
-            border-radius: 12px;
-            background: var(--panel);
-            border: 1px solid var(--border);
-            box-shadow: none;
-            text-align: center;
-        }
-
-        .stat-card h3 {
-            margin: 0 0 4px;
-            font-size: 20px;
-            color: var(--accent);
-        }
-
-        .stat-card p {
-            margin: 0;
-            color: var(--muted);
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-        }
 
         .content-grid {
             display: grid;
             grid-template-columns: 1fr;
             gap: 12px;
             padding: 0 16px;
+
         }
 
         .panel {
@@ -182,6 +154,7 @@
             background: var(--panel);
             border: 1px solid var(--border);
             box-shadow: none;
+            margin-top: 15px;
         }
 
         .panel + .panel {
@@ -242,9 +215,14 @@
             color: var(--muted);
         }
 
+        .post-meta .action-link {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
         .post-content {
             margin-top: 8px;
-            font-size: 14px;
+            font-size: 16px;
             line-height: 1.5;
         }
 
@@ -252,6 +230,7 @@
             margin-top: 10px;
             display: flex;
             gap: 8px;
+            justify-content: flex-end;
         }
 
         .action-btn {
@@ -355,13 +334,41 @@
 <body>
 
 <div class="layout">
-    <nav class="sidenav">
-        <div class="brand">TuneTribe</div>
+    <nav class="sidenav" th:if="${isAdmin}">
+        <div class="brand" style="margin-bottom: 20px; margin-top: 3px;">TuneTribe Admin</div>
+        <div class="nav-links">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/admin/home}">Dashboard</a>
+            <a th:href="@{/profile}">My Profile</a>
+            <a th:href="@{/admin/community-guidelines}">Community Guidelines</a>
+            <a th:href="@{/admin/copyright-rules}">Copyright Rules</a>
+        </div>
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <button class="logout-btn" type="submit">Log Out</button>
+        </form>
+    </nav>
+
+    <nav class="sidenav" th:if="${isMod}" style="margin-top: 3px;">
+        <div class="brand" style="margin-bottom: 21px; ">TuneTribe Mod</div>
+        <div class="nav-links">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/mod/home}">Dashboard</a>
+            <a th:href="@{/profile}">My Profile</a>
+            <a th:href="@{/tunetribe-guidelines}">Community Guidelines</a>
+            <a th:href="@{/tunetribe-copyright}">Copyright Rules</a>
+        </div>
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <button class="logout-btn" type="submit">Log Out</button>
+        </form>
+    </nav>
+
+    <nav class="sidenav" th:if="${!isAdmin and !isMod}">
+        <div class="brand" style="margin-bottom: 20px; margin-top: 3px;">TuneTribe</div>
         <div class="nav-links">
             <a th:href="@{/}">Home</a>
             <a th:href="@{/profile}">My Profile</a>
-            <a th:href="@{/tunetribe-guidelines}">Guidelines</a>
-            <a th:href="@{/tunetribe-copyright}">Copyright</a>
+            <a th:href="@{/tunetribe-guidelines}">Community Guidelines</a>
+            <a th:href="@{/tunetribe-copyright}">Copyright Rules</a>
         </div>
         <form th:action="@{/logout}" method="post" class="logout-form">
             <button class="logout-btn" type="submit">Log Out</button>
@@ -372,22 +379,6 @@
         <div class="header">
             <h2 class="page-title" th:text="${currentUser}">User</h2>
         </div>
-
-        
-            <div class="stats">
-                <div class="stat-card">
-                    <h3 th:text="${totalPosts}"></h3>
-                    <p>Total Posts</p>
-                </div>
-                <div class="stat-card">
-                    <h3 th:text="${totalFollowers}"></h3>
-                    <p>Followers</p>
-                </div>
-                <div class="stat-card">
-                    <h3 th:text="${totalFollowing}"></h3>
-                    <p>Following</p>
-                </div>
-            </div>
         
 
         <div class="content-grid">
@@ -396,7 +387,7 @@
                 <form th:action="@{/posts}" method="post">
                     <textarea class="form-control" name="content" rows="3" placeholder="Share what you're listening to..."></textarea>
 
-                    <div th:if="${currentUserEntity != null and #strings.equalsIgnoreCase(currentUserEntity.role, 'Artist')}">
+                    <div th:if="${currentUserEntity != null and (#strings.equalsIgnoreCase(currentUserEntity.role, 'Artist') or #strings.equalsIgnoreCase(currentUserEntity.originalRole, 'Artist'))}">
                         <input class="form-control" name="musicTitle" placeholder="Track title" />
                         <input class="form-control" name="musicUrl" placeholder="Track link" style="margin-top:10px;" />
                     </div>
@@ -414,7 +405,7 @@
 
                 <div th:each="post : ${posts}" class="post-card">
                     <div class="post-meta">
-                        <span th:text="${post.user.userName}"></span>
+                        <a class="action-link" th:href="@{/users/{id}(id=${post.user.id})}" th:text="${post.user.userName}"></a>
                         <span th:text="${#temporals.format(post.createdAt, 'MMM dd, yyyy HH:mm')}"></span>
                     </div>
                     <div class="post-content" th:text="${post.content}"></div>
@@ -437,7 +428,7 @@
                          th:if="${currentUserEntity != null and currentUserEntity.id == post.user.id}">
                         <form th:action="@{/posts/{id}/edit(id=${post.id})}" method="post">
                             <textarea class="form-control" name="content" rows="3" th:text="${post.content}"></textarea>
-                            <div th:if="${currentUserEntity != null and #strings.equalsIgnoreCase(currentUserEntity.role, 'Artist')}">
+                            <div th:if="${currentUserEntity != null and (#strings.equalsIgnoreCase(currentUserEntity.role, 'Artist') or #strings.equalsIgnoreCase(currentUserEntity.originalRole, 'Artist'))}">
                                 <input class="form-control" name="musicTitle" placeholder="Track title" th:value="${post.musicTitle}" style="margin-top:10px;" />
                                 <input class="form-control" name="musicUrl" placeholder="Track link" th:value="${post.musicUrl}" style="margin-top:10px;" />
                             </div>
@@ -460,7 +451,7 @@
                 No recent tracks.
             </div>
 
-            <div th:each="trackPost : ${recentTracks}" class="list-item">
+            <div th:each="trackPost, iter : ${recentTracks}" th:if="${iter.index < 5}" class="list-item">
                 <span th:text="${trackPost.musicTitle}"></span>
                 <span class="badge-pill" th:text="${trackPost.user.userName}"></span>
             </div>
@@ -473,7 +464,7 @@
                 No suggestions yet.
             </div>
 
-            <div th:each="person : ${suggestedUsers}" class="list-item">
+            <div th:each="person, iter : ${suggestedUsers}" th:if="${iter.index < 5}" class="list-item">
                 <span th:text="${person.userName}"></span>
                 <a class="action-link" th:href="@{/users/{id}(id=${person.id})}">View</a>
             </div>
@@ -486,7 +477,7 @@
                 No trending artists right now.
             </div>
 
-            <div th:each="artist : ${trendingArtists}" class="list-item">
+            <div th:each="artist, iter : ${trendingArtists}" th:if="${iter.index < 5}" class="list-item">
                 <span th:text="${artist.userName}"></span>
                 <a class="action-link" th:href="@{/users/{id}(id=${artist.id})}">View</a>
             </div>
@@ -497,7 +488,7 @@
             <div th:if="${updates == null || #lists.isEmpty(updates)}" class="empty-state">
                 No updates available.
             </div>
-            <div th:each="update : ${updates}" class="list-item">
+            <div th:each="update, iter : ${updates}" th:if="${iter.index < 5}" class="list-item">
                 <span th:text="${update.content}"></span>
                 <a class="action-link" th:href="@{/}">Open</a>
             </div>

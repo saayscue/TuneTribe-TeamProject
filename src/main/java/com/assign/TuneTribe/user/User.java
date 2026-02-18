@@ -31,6 +31,7 @@ public class User {
     private boolean banned = false;
     private String userPassword;
     private String role;
+    private String originalRole;
 
     public User(String username, String userEmail, boolean banned, String userPassword, String userFName,
             String userLName, String role) {
@@ -49,6 +50,14 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getOriginalRole() {
+        return originalRole;
+    }
+
+    public void setOriginalRole(String originalRole) {
+        this.originalRole = originalRole;
     }
 
     public String getUserFName() {

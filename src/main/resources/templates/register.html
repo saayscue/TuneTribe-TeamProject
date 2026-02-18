@@ -13,132 +13,219 @@
         <link rel="stylesheet" href="/app-theme.css" />
 
     <style>
+        :root {
+            color-scheme: dark;
+            --bg: #0b0f14;
+            --surface: #0f141a;
+            --panel: #151b24;
+            --panel-alt: #111821;
+            --border: #1f2a36;
+            --text: #e9f1f7;
+            --muted: #96a6b5;
+            --accent: #4cc2ff;
+            --accent-strong: #21a7f1;
+        }
+
         body {
-            background-color: #f8f9fa;
-            height: 100vh;
+            background: var(--bg);
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            margin: 0;
+            font-family: "Inter", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: var(--text);
         }
 
-        .register-card {
+        .login-shell {
             width: 100%;
-            max-width: 450px;
-            padding: 35px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            min-height: 100vh;
+            background: var(--bg);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .login-visual {
+            background:
+                linear-gradient(135deg, rgba(76, 194, 255, 0.35), rgba(21, 27, 36, 0.9)),
+                url("/images/music2.jpg") center/cover no-repeat;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            padding: 32px;
+        }
+
+        .visual-caption {
+            background: rgba(11, 15, 20, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px 18px;
+            border-radius: 16px;
+            backdrop-filter: blur(8px);
+        }
+
+        .visual-caption h2 {
+            margin: 0 0 6px;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .visual-caption p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .login-card {
+            width: 100%;
+            padding: 64px 72px;
+            background: var(--panel);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 6px;
         }
 
         .register-title {
             text-align: center;
-            font-size: 32px;
-            font-family: cursive;
-            margin-bottom: 30px;
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 24px;
         }
 
         .form-control {
-            border: none;
-            border-bottom: 2px solid black;
-            border-radius: 0;
-            background: none;
-            margin: 22px 0;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: var(--panel-alt);
+            color: var(--text);
+            margin: 16px 0;
+            padding: 12px 14px;
         }
 
         .form-control:focus {
             box-shadow: none;
-            border-bottom: 2px solid black;
-        }
-
-        select.form-control {
-            border-bottom: 2px solid black;
+            border-color: var(--accent);
         }
 
         .register-btn {
+            margin-top: 24px;
             height: 45px;
             width: 100%;
-            background-color: lightblue;
-            color: gray;
+            background: var(--accent);
+            color: #051522;
             font-size: 16px;
             border: none;
-            border-radius: 6px;
-            transition: 0.3s ease;
-            margin-top: 10px;
+            border-radius: 999px;
+            transition: 0.2s ease;
+            font-weight: 700;
         }
 
         .register-btn:hover {
-            opacity: 0.85;
+            background: var(--accent-strong);
         }
 
         .login-text {
             text-align: center;
             margin-top: 20px;
+            color: var(--muted);
+        }
+
+        .login-text a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-text a:hover {
+            color: var(--accent-strong);
+        }
+
+        @media (max-width: 900px) {
+            .login-shell {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+
+            .login-visual {
+                min-height: 220px;
+            }
+
+            .login-card {
+                padding: 36px 28px 42px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-<div class="card register-card">
+<div class="login-shell">
+    <section class="login-visual" aria-hidden="true">
+        <div class="visual-caption">
+            <h2>Create your profile</h2>
+            <p>Sign up to follow artists and share your favorite tracks.</p>
+        </div>
+    </section>
 
-    <div class="register-title">Tune Tribe Register</div>
+    <div class="login-card">
+        <div class="register-title">Tune Tribe Register</div>
 
-    <form th:action="@{/register}" method="post">
+        <form th:action="@{/register}" method="post">
 
-        <input type="text"
-               class="form-control"
-               id="firstname"
-               name="userFName"
-               placeholder="Enter first name"
-               required />
+            <input type="text"
+                   class="form-control"
+                   id="firstname"
+                   name="userFName"
+                   placeholder="Enter first name"
+                   required />
 
-        <input type="text"
-               class="form-control"
-               id="lastname"
-               name="userLName"
-               placeholder="Enter last name"
-               required />
+            <input type="text"
+                   class="form-control"
+                   id="lastname"
+                   name="userLName"
+                   placeholder="Enter last name"
+                   required />
 
-        <input type="text"
-               class="form-control"
-               id="username"
-               name="userName"
-               placeholder="Enter username"
-               required />
+            <input type="text"
+                   class="form-control"
+                   id="username"
+                   name="userName"
+                   placeholder="Enter username"
+                   required />
 
-        <input type="password"
-               class="form-control"
-               id="password"
-               name="userPassword"
-               placeholder="Enter password"
-               required />
+            <input type="password"
+                   class="form-control"
+                   id="password"
+                   name="userPassword"
+                   placeholder="Enter password"
+                   required />
 
-        <input type="email"
-               class="form-control"
-               id="email"
-               name="userEmail"
-               placeholder="Enter email"
-               required />
+            <input type="email"
+                   class="form-control"
+                   id="email"
+                   name="userEmail"
+                   placeholder="Enter email"
+                   required />
 
-        <select class="form-control"
-                id="role"
-                name="role"
-                required>
-            <option value="">Select User Type</option>
-            <option value="User">User</option>
-            <option value="Artist">Artist</option>
-        </select>
+            <select class="form-control"
+                    id="role"
+                    name="role"
+                    required>
+                <option value="">Select User Type</option>
+                <option value="User">User</option>
+                <option value="Artist">Artist</option>
+            </select>
 
-        <button class="register-btn" type="submit">
-            Register
-        </button>
+            <button class="register-btn" type="submit">
+                Register
+            </button>
 
-    </form>
+        </form>
 
-    <div class="login-text">
-        Already have an account?
-        <a href="/login">Login here</a>.
+        <div class="login-text">
+            Already have an account?
+            <a href="/login">Login here</a>.
+        </div>
     </div>
-
 </div>
 
 </body>

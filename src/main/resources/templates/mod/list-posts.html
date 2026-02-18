@@ -13,10 +13,10 @@
 
     <style>
         body {
-            background-color: #f4f6f9;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            font-family: "Inter", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
-            color: #2c3e50;
+            color: var(--text);
         }
 
         .sidenav {
@@ -25,32 +25,61 @@
             position: fixed;
             left: 0;
             top: 0;
-            background-color: #1f2d3d;
-            padding-top: 30px;
+            background: var(--bg);
+            padding: 24px 18px;
             display: flex;
             flex-direction: column;
+            gap: 14px;
+            border-right: 1px solid var(--border);
         }
 
-        .sidenav h4 {
-            color: #ffffff;
-            text-align: center;
-            margin-bottom: 30px;
+        .brand {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 0.2px;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: transparent;
+            transition: 0.2s ease;
+            font-size: 16px;
             font-weight: 600;
         }
 
-        .sidenav a {
-            padding: 12px 25px;
-            font-size: 15px;
-            color: #cfd8dc;
-            text-decoration: none;
-            transition: 0.2s ease;
-            margin: 4px 15px;
-            border-radius: 6px;
+        .nav-links a:hover {
+            background: #161e2a;
         }
 
-        .sidenav a:hover {
-            background-color: #2e4053;
-            color: #ffffff;
+        .main-content {
+            margin-left: 240px;
+            padding: 40px;
+        }
+
+        .table-card {
+            background-color: #1f2d3d;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        tbody tr:hover {
+            background-color: #18232f;
+        }
+
+        .btn-sm {
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-size: 12px;
         }
 
         .logout-form {
@@ -60,59 +89,76 @@
 
         .logout-btn {
             width: 100%;
-            background-color: lightblue;
+            padding: 12px 16px;
             border: none;
-            border-radius: 6px;
-            padding: 10px;
-            color: white;
-            font-weight: 500;
+            border-radius: 999px;
+            background: var(--accent);
+            color: #051522;
+            font-weight: 700;
             transition: 0.2s ease;
         }
 
         .logout-btn:hover {
-            background-color: #2980b9;
-        }
-
-        .main-content {
-            margin-left: 240px;
-            padding: 40px;
-        }
-
-        .table-card {
-            background-color: #ffffff;
-            border-radius: 8px;
-            padding: 25px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-
-        .btn-sm {
-            border-radius: 20px;
-            padding: 5px 12px;
-            font-size: 12px;
+            background: var(--accent-strong);
         }
     </style>
 </head>
 <body>
 
-<div class="sidenav">
-    <h4>TuneTribe Mod</h4>
+    <div class="sidenav">
+        <h4>TuneTribe Mod</h4>
 
-    <a th:href="@{/mod/home}">Dashboard</a>
-    <a th:href="@{/mod/users}">Users</a>
-    <a th:href="@{/mod/posts}">Posts</a>
-    <a th:href="@{/mod/follows}">Follows</a>
+        <nav class="sidenav" style="margin-bottom: -1px;">
+            <div class="brand" >TuneTribe Mod</div>
+            <div class="nav-links">
+                <a th:href="@{/}">Home</a>
+                <a th:href="@{/mod/home}">Dashboard</a>
+                <a th:href="@{/profile}">My Profile</a>
+                <a th:href="@{/tunetribe-guidelines}">Community Guidelines</a>
+                <a th:href="@{/tunetribe-copyright}">Copyright Rules</a>
+            </div>
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button class="logout-btn" type="submit">Log Out</button>
+            </form>
+        </nav>
 
-    <form th:action="@{/logout}" method="post" class="logout-form">
-        <button class="logout-btn" type="submit">Log Out</button>
-    </form>
-</div>
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <button class="logout-btn" type="submit">Log Out</button>
+        </form>
+    </div>
 
 <div class="main-content">
     <h2>Moderate Posts</h2>
 
+    <form class="mb-3" method="get" th:action="@{/mod/posts}">
+        <div class="form-row">
+            <div class="col-md-4 mb-2">
+                <select class="form-control" name="role">
+                    <option value="all" th:selected="${roleFilter == 'all'}">All Roles</option>
+                    <option value="User" th:selected="${roleFilter == 'User'}">User</option>
+                    <option value="Artist" th:selected="${roleFilter == 'Artist'}">Artist</option>
+                </select>
+            </div>
+            <div class="col-md-4 mb-2">
+                <select class="form-control" name="status">
+                    <option value="all" th:selected="${statusFilter == 'all'}">All Statuses</option>
+                    <option value="active" th:selected="${statusFilter == 'active'}">Active</option>
+                    <option value="banned" th:selected="${statusFilter == 'banned'}">Banned</option>
+                </select>
+            </div>
+            <div class="col-md-4 mb-2">
+                <button class="btn btn-primary btn-block" type="submit">Apply Filters</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="mb-3">
+        <input id="table-search" class="form-control" type="text" placeholder="Search posts..." />
+    </div>
+
     <div class="table-card">
         <div class="table-responsive">
-            <table class="table">
+            <table class="table" id="datatable">
                 <thead>
                 <tr>
                     <th>ID</th>
@@ -139,6 +185,22 @@
         </div>
     </div>
 </div>
+
+<script>
+    const searchInput = document.getElementById('table-search');
+    const table = document.getElementById('datatable');
+
+    if (searchInput && table) {
+        searchInput.addEventListener('input', function () {
+            const query = this.value.toLowerCase();
+            const rows = table.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
+            });
+        });
+    }
+</script>
 
 </body>
 </html>

@@ -87,27 +87,35 @@
         .page-wrapper {
             margin-left: 240px;
             padding: 60px 20px;
+            display: flex;
+            justify-content: center;
         }
 
         .guidelines-card {
-            max-width: 900px;
+            max-width: 1100px;
+            width: 100%;
             margin: 0 auto;
-            background-color: #ffffff;
+            background-color: #1f2d3d;
             padding: 40px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            height: 640px;
+            overflow: auto;
         }
 
         .page-title {
             font-weight: 600;
             margin-bottom: 25px;
-            color: #2c3e50;
+            color: #e9f1f7;
+            text-align: center;
+            border-bottom: 2px solid #eaecef;
+            padding-bottom: 10px;
         }
 
         .guidelines-content {
-            font-size: 16px;
+            font-size: 17px;
             line-height: 1.7;
-            color: #495057;
+            color: #cbd5e1;
             white-space: pre-line;
         }
 
@@ -119,9 +127,9 @@
 <nav class="sidenav">
     <div class="brand">TuneTribe Admin</div>
     <div class="nav-links">
+         <a href="/">Home</a>
         <a th:href="@{/admin/home}">Dashboard</a>
-        <a th:href="@{/admin/tunetribe}">TuneTribe</a>
-        <a th:href="@{/admin/tunetribe-guidelines}">Guidelines</a>
+        <a th:href="@{/admin/tunetribe-guidelines}">Community Guidelines</a>
         <a th:href="@{/admin/tunetribe-copyright}">Copyright Rules</a>
     </div>
     <form th:action="@{/logout}" method="post" class="logout-form">

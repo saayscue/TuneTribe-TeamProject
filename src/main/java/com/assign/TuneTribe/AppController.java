@@ -47,50 +47,46 @@ public class AppController {
         // Check if the user is authenticated
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.isAuthenticated()) {
-            // Check if the user has the admin role
-            if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("Admin"))) {
-                long totalUsers = adminService.getTotalUsers();
-                model.addAttribute("totalUsers", totalUsers);
+            boolean isAdmin = auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("Admin"));
+            boolean isMod = auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("Mod"));
+            model.addAttribute("isAdmin", isAdmin);
+            model.addAttribute("isMod", isMod);
 
-                return "admin/admin"; // Redirect admin users to admin page
-            } else {
-                // Regular users go to root page
-                String name = auth.getName();
-                model.addAttribute("currentUser", name);
+            String name = auth.getName();
+            model.addAttribute("currentUser", name);
 
-                User currentUser = repo.findByUserName(name).orElse(null);
-                if (currentUser != null) {
-                    if (Boolean.TRUE.equals(currentUser.isBanned())) {
-                        return "redirect:/force-logout";
-                    }
-                    model.addAttribute("posts", postService.getFeedForUser(currentUser));
-                    model.addAttribute("totalPosts", postService.countPostsForUser(currentUser));
-                    model.addAttribute("currentUserEntity", currentUser);
-                    model.addAttribute("totalFollowers", followService.countFollowers(currentUser));
-                    model.addAttribute("totalFollowing", followService.countFollowing(currentUser));
-
-                    List<User> suggestedUsers = repo.findByUserNameNotAndBannedFalse(currentUser.getUserName());
-                    model.addAttribute("suggestedUsers", suggestedUsers);
-
-                    List<User> trendingArtists = repo.findByRoleIgnoreCaseAndBannedFalse("Artist");
-                    model.addAttribute("trendingArtists", trendingArtists);
-
-                    model.addAttribute("recentTracks", postService.getRecentMusicPosts(5));
-                    model.addAttribute("updates", postService.getRecentPosts(5));
-                } else {
-                    model.addAttribute("posts", Collections.emptyList());
-                    model.addAttribute("totalPosts", 0);
-                    model.addAttribute("currentUserEntity", null);
-                    model.addAttribute("suggestedUsers", Collections.emptyList());
-                    model.addAttribute("trendingArtists", Collections.emptyList());
-                    model.addAttribute("recentTracks", Collections.emptyList());
-                    model.addAttribute("updates", Collections.emptyList());
-                    model.addAttribute("totalFollowers", 0);
-                    model.addAttribute("totalFollowing", 0);
+            User currentUser = repo.findByUserName(name).orElse(null);
+            if (currentUser != null) {
+                if (Boolean.TRUE.equals(currentUser.isBanned())) {
+                    return "redirect:/force-logout";
                 }
+                model.addAttribute("posts", postService.getFeedForUser(currentUser));
+                model.addAttribute("totalPosts", postService.countPostsForUser(currentUser));
+                model.addAttribute("currentUserEntity", currentUser);
+                model.addAttribute("totalFollowers", followService.countFollowers(currentUser));
+                model.addAttribute("totalFollowing", followService.countFollowing(currentUser));
 
-                return "user";
+                List<User> suggestedUsers = repo.findByUserNameNotAndBannedFalse(currentUser.getUserName());
+                model.addAttribute("suggestedUsers", suggestedUsers);
+
+                List<User> trendingArtists = repo.findByRoleIgnoreCaseAndBannedFalse("Artist");
+                model.addAttribute("trendingArtists", trendingArtists);
+
+                model.addAttribute("recentTracks", postService.getRecentMusicPosts(5));
+                model.addAttribute("updates", postService.getRecentPosts(5));
+            } else {
+                model.addAttribute("posts", Collections.emptyList());
+                model.addAttribute("totalPosts", 0);
+                model.addAttribute("currentUserEntity", null);
+                model.addAttribute("suggestedUsers", Collections.emptyList());
+                model.addAttribute("trendingArtists", Collections.emptyList());
+                model.addAttribute("recentTracks", Collections.emptyList());
+                model.addAttribute("updates", Collections.emptyList());
+                model.addAttribute("totalFollowers", 0);
+                model.addAttribute("totalFollowing", 0);
             }
+
+            return "user";
         }
         return "redirect:/login"; // Redirect unauthenticated users to login page
     }
@@ -119,6 +115,12 @@ public class AppController {
 
     @GetMapping("/tunetribe-guidelines")
     public String viewGuidelines(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdmin = auth != null
+                && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("Admin"));
+        boolean isMod = auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("Mod"));
+        model.addAttribute("isAdmin", isAdmin);
+        model.addAttribute("isMod", isMod);
         String guidelines = adminService.getCommunityGuidelines();
         model.addAttribute("guidelines", guidelines);
         return "guidelines";
@@ -126,6 +128,12 @@ public class AppController {
 
     @GetMapping("/tunetribe-copyright")
     public String viewCopyright(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdmin = auth != null
+                && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("Admin"));
+        boolean isMod = auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("Mod"));
+        model.addAttribute("isAdmin", isAdmin);
+        model.addAttribute("isMod", isMod);
         String copyright = adminService.getCopyRight();
         model.addAttribute("copyright", copyright);
         return "copyright";
