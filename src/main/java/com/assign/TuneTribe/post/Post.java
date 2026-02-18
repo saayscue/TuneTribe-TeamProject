@@ -13,10 +13,6 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
-/**
- *
- * @author shauna
- */
 @Entity
 @Table(name = "posts")
 public class Post {

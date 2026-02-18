@@ -4,10 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author shauna
- */
 @Service
 public class UserService {
 
@@ -16,14 +12,13 @@ public class UserService {
 
     @Autowired
     PasswordEncoder passwordEncoder;
-   
-    
-  public void registerUser(User user) {
+
+    public void registerUser(User user) {
         user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
         repo.save(user);
     }
-  
-   public void saveUser(User user) {
+
+    public void saveUser(User user) {
         user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
         repo.save(user);
     }

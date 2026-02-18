@@ -11,10 +11,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
-/**
- *
- * @author shauna
- */
 @Entity
 @Table(name = "follows", uniqueConstraints = {
         @UniqueConstraint(columnNames = { "follower_id", "following_id" })

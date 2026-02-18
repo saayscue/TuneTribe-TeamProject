@@ -10,10 +10,6 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-/**
- *
- * @author shauna
- */
 @Entity
 @Table(name = "users")
 @NoArgsConstructor

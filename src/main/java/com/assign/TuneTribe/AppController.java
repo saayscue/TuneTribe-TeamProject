@@ -20,10 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.http.ResponseEntity;
 
-/**
- *
- * @author shauna
- */
 @Controller
 public class AppController {
 
@@ -88,7 +84,7 @@ public class AppController {
 
             return "user";
         }
-        return "redirect:/login"; // Redirect unauthenticated users to login page
+        return "redirect:/login";
     }
 
     @GetMapping("/force-logout")

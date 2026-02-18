@@ -11,10 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author shauna
- */
 @Service
 public class AdminService {
 
@@ -160,7 +156,7 @@ public class AdminService {
     }
 
     public long getTotalUsers() {
-        return userRepo.count(); // Count all users in the repository
+        return userRepo.count();
     }
 
     public List<Mod> getAllRequests() {

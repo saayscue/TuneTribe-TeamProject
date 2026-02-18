@@ -1,9 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.assign.TuneTribe.artist;
-
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,7 +16,7 @@ public class Artist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-   
+
     private Long artistId;
     private String userName;
     private String artistFName;
@@ -35,7 +30,6 @@ public class Artist {
         this.artistEmail = artistEmail;
         this.artistPassword = artistPassword;
     }
-    
 
     public Long getArtistId() {
         return artistId;
@@ -84,8 +78,5 @@ public class Artist {
     public void setArtistPassword(String artistPassword) {
         this.artistPassword = artistPassword;
     }
-    
-    
-    
-    
+
 }

@@ -4,10 +4,6 @@ import com.assign.TuneTribe.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-/**
- *
- * @author shauna
- */
 @Repository
 public interface FollowRepository extends JpaRepository<Follow, Long> {
 

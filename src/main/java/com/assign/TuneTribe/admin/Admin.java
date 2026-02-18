@@ -8,10 +8,6 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-/**
- *
- * @author shauna
- */
 @Entity
 @Table(name = "admin")
 @NoArgsConstructor
@@ -26,7 +22,7 @@ public class Admin {
     private String adminPassword;
     private String role;
     private String communityGuidelines;
-     private String copyright;
+    private String copyright;
 
     public String getCopyright() {
         return copyright;
@@ -35,8 +31,6 @@ public class Admin {
     public void setCopyright(String copyright) {
         this.copyright = copyright;
     }
-     
-     
 
     public String getCommunityGuidelines() {
         return communityGuidelines;
@@ -45,8 +39,6 @@ public class Admin {
     public void setCommunityGuidelines(String communityGuidelines) {
         this.communityGuidelines = communityGuidelines;
     }
-    
-    
 
     public String getRole() {
         return role;
@@ -56,8 +48,6 @@ public class Admin {
         this.role = role;
     }
 
-    
-    
     public Long getAdminId() {
         return adminId;
     }
@@ -89,7 +79,5 @@ public class Admin {
     public void setAdminPassword(String adminPassword) {
         this.adminPassword = adminPassword;
     }
-
-  
 
 }

@@ -21,10 +21,6 @@ import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 
-/**
- *
- * @author shauna
- */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -82,14 +78,14 @@ public class SecurityConfig {
                 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
                 if (auth != null && auth.isAuthenticated()) {
                     if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("Admin"))) {
-                        return "/admin/home"; // Redirect admin users to admin page
+                        return "/admin/home";
                     } else if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("Mod"))) {
                         return "/mod/home";
                     } else {
-                        return "/"; // Redirect regular users to root page
+                        return "/";
                     }
                 }
-                return "/login"; // Default redirect to login page
+                return "/login";
             }
         };
     }
