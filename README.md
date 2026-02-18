@@ -2,7 +2,8 @@
 
 TuneTribe is a Spring Boot music app where users and artists share posts, follow each other, and manage with role-based dashboards.
 
-Music feature: artists can add a track to a post by entering a track title and artist name. It calls Spotify’s Search API (type=track, query: track:{title} artist:{artist}) and shows the Spotify track URL on the post.
+## Spotify API
+Artists can add a track to a post by entering a track title and artist name. It calls Spotify’s Search API (type=track, query: track:{title} artist:{artist}) and shows the Spotify track URL on the post.
 
 ## Features
 
@@ -53,7 +54,8 @@ spring.datasource.password=
 
 1. Create a Spotify app and get a Client ID and Client Secret:
    https://developer.spotify.com/dashboard
-2. Add credentials to (src/main/resources/application.properties):
+   - For Redirect URIs put: ```https://localhost```
+3. Add credentials to (src/main/resources/application.properties):
 
 ```properties
 spotify.client-id=YOUR_SPOTIFY_CLIENT_ID
