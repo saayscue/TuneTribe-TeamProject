@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "spotify.client-id",
+      "type": "java.lang.String",
+      "description": "Spotify Client ID for client credentials flow."
+    },
+    {
+      "name": "spotify.client-secret",
+      "type": "java.lang.String",
+      "description": "Spotify Client Secret for client credentials flow."
+    }
+  ]
+}

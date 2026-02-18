@@ -1,71 +1,66 @@
 # TuneTribe
 
-TuneTribe is a Spring Boot web app that is a music community platform.
+TuneTribe is a Spring Boot music app where users and artists share posts, follow each other, and manage with role-based dashboards.
+
+Music feature: artists can add a track to a post by entering a track title and artist name. It calls Spotify’s Search API (type=track, query: track:{title} artist:{artist}) and shows the Spotify track URL on the post.
 
 ## Features
 
-- **User**: Register and login
-- **Artist**: Create and manage artist profiles
-- **Admin Dashboard**: Admins to manage users, artists, and moderators
-- **Community Guidelines**: Managing community standards
-- **Copyright**: Copyright and policy
-- **Moderation System**: Manage community content and requests
-- **Role-Based Access Control**: Different views and permissions for regular users, artists, moderators, and admins
+- **Register and login**
+- **User**: Post and follow
+- **Artist**: Add a track to a post
+- **Admin Dashboard**: Manage users, artists, and moderators
+- **Mod Dashboard**: Manage users, artists
+- **Community Guidelines**
+- **Copyright**
+- **Role-Based**: Different views and permissions for regular users, artists, moderators, and admins
 
 ## Tech Stack
 
-- **Framework**: Spring Boot 3.2.4
-- **Java Version**: Java 21
+- **Framework**: Spring Boot
+- **Language**: Java
 - **Build Tool**: Maven
 - **Database**: MySQL
 - **ORM**: JPA Hibernate
-- **Template Engine**: Thymeleaf
-- **Security**: Spring Security with BCrypt password encryption
-- **Development Tools**: Spring Boot DevTools, Lombok
+- **Thymeleaf**
+- **Spring Security with BCrypt password encryption**
+- **Dev Tools**: Spring Boot DevTools, Lombok
 
-## Before running the app, install:
+## Install:
 
 - Java 21 or higher
-- MySQL Server
-- Maven (or use the included Maven wrapper)
+- MySQL Server (I used XAMPP which includes phpMyAdmin)
 
 ## Setup
 
 ### 1. Database Setup (MySQL)
 
-1. Start your MySQL server.
-2. Create the database (I used phpMyAdmin to create it):
+1. Start MySQL server
+2. Create the database:
 
    ```sql
    CREATE DATABASE csc340_project;
    ```
 
-3. (Optional) Create a dedicated MySQL user OR leave the default root username and no password:
-
-   ```sql
-   CREATE USER 'tunetribe'@'localhost' IDENTIFIED BY 'your_password';
-   GRANT ALL PRIVILEGES ON csc340_project.* TO 'tunetribe'@'localhost';
-   FLUSH PRIVILEGES;
-   ```
-
-4. Hibernate will auto-create tables on first run (`spring.jpa.hibernate.ddl-auto=update`).
-
-### 2. Database Connection
-
-Edit (src/main/resources/application.properties) to match your MySQL credentials:
+3. Edit (src/main/resources/application.properties) to match your MySQL credentials (if needed):
 
 ```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/csc340_project?useSSL=false
 spring.datasource.username=root
 spring.datasource.password=
 ```
 
-Since root now has no password, your config should be:
+### 2.1 Spotify API
 
-spring.datasource.username=root
-spring.datasource.password= (empty)
+1. Create a Spotify app and get a Client ID and Client Secret:
+   https://developer.spotify.com/dashboard
+2. Add credentials to (src/main/resources/application.properties):
 
-### 3. Build and Run the App
+```properties
+spotify.client-id=YOUR_SPOTIFY_CLIENT_ID
+spotify.client-secret=YOUR_SPOTIFY_CLIENT_SECRET
+```
+
+### 3. Build and Run
 
 #### macOS/Linux
 
@@ -81,19 +76,13 @@ mvnw.cmd clean install
 mvnw.cmd spring-boot:run
 ```
 
-### 4. Access the App
-
-Open your browser at:
+### 4. Open browser at:
 
 ```
 http://localhost:8080
 ```
 
-### 5. Create an Admin (Optional)
+### 5. Create an Admin
 
-## Admin Setup
-
-To make a user an admin:
-
-1. Register a normal account in the app.
+1. Register a normal account
 2. In MySQL, update the user’s `role` to `Admin` in the `user` table.

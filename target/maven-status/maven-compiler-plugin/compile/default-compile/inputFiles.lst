@@ -19,6 +19,7 @@
 /Users/shaunaayscue/Desktop/TuneTribe-TeamProject/src/main/java/com/assign/TuneTribe/mod/ModRepository.java
 /Users/shaunaayscue/Desktop/TuneTribe-TeamProject/src/main/java/com/assign/TuneTribe/user/User.java
 /Users/shaunaayscue/Desktop/TuneTribe-TeamProject/src/main/java/com/assign/TuneTribe/user/CustomUserDetailsSerivce.java
+/Users/shaunaayscue/Desktop/TuneTribe-TeamProject/src/main/java/com/assign/TuneTribe/spotify/SpotifyService.java
 /Users/shaunaayscue/Desktop/TuneTribe-TeamProject/src/main/java/com/assign/TuneTribe/AppController.java
 /Users/shaunaayscue/Desktop/TuneTribe-TeamProject/src/main/java/com/assign/TuneTribe/artist/ArtistController.java
 /Users/shaunaayscue/Desktop/TuneTribe-TeamProject/src/main/java/com/assign/TuneTribe/follow/FollowController.java

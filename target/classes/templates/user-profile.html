@@ -323,7 +323,7 @@
                 <textarea class="form-control" name="content" rows="3" th:text="${post.content}"></textarea>
                 <div th:if="${currentUserEntity != null and (#strings.equalsIgnoreCase(currentUserEntity.role, 'Artist') or #strings.equalsIgnoreCase(currentUserEntity.originalRole, 'Artist'))}">
                     <input class="form-control" name="musicTitle" placeholder="Track title" th:value="${post.musicTitle}" style="margin-top:10px;" />
-                    <input class="form-control" name="musicUrl" placeholder="Track link" th:value="${post.musicUrl}" style="margin-top:10px;" />
+                    <input class="form-control" name="musicArtist" placeholder="Artist name" style="margin-top:10px;" />
                 </div>
                 <div class="post-actions">
                     <button type="submit" class="action-btn">Save</button>
