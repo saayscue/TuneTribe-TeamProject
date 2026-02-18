@@ -54,7 +54,8 @@ spring.datasource.password=
 
 1. Create a Spotify app and get a Client ID and Client Secret:
    https://developer.spotify.com/dashboard
-2. Add credentials to (src/main/resources/application.properties):
+   - Redirect URI: ```https://localhost```
+3. Add credentials to (src/main/resources/application.properties):
 
 ```properties
 spotify.client-id=YOUR_SPOTIFY_CLIENT_ID
