@@ -1,12 +1,11 @@
 package com.assign.TuneTribe.spotify;
 
 import java.time.Instant;
-import java.util.*;
-
+import java.util.Optional;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.*;
-
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.*;
@@ -22,11 +21,9 @@ public class SpotifyService {
     private static final Logger logger = LoggerFactory.getLogger(SpotifyService.class);
     private static final String TOKEN_URL = "https://accounts.spotify.com/api/token";
     private static final String SEARCH_URL = "https://api.spotify.com/v1/search";
-
     private final RestTemplate restTemplate;
-
     private final SpotifyProperties spotifyProperties;
-
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private String accessToken;
     private Instant accessTokenExpiresAt;
 
@@ -43,6 +40,7 @@ public class SpotifyService {
         if (title == null || title.isBlank()) {
             return Optional.empty();
         }
+
         String query = buildQuery(title, artist);
         String url = UriComponentsBuilder.fromHttpUrl(SEARCH_URL)
                 .queryParam("q", query)
@@ -56,41 +54,21 @@ public class SpotifyService {
         HttpEntity<Void> entity = new HttpEntity<>(headers);
 
         try {
-            ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
+            ResponseEntity<String> response = restTemplate.exchange(
                     url,
                     HttpMethod.GET,
                     entity,
-                    new ParameterizedTypeReference<Map<String, Object>>() {
-                    });
-            Map<String, Object> body = response.getBody();
-            if (body == null) {
+                    String.class);
+
+            if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
                 return Optional.empty();
             }
-            Object tracksObj = body.get("tracks");
-            if (!(tracksObj instanceof Map)) {
-                return Optional.empty();
-            }
-            Map<?, ?> tracks = (Map<?, ?>) tracksObj;
-            Object itemsObj = tracks.get("items");
-            if (!(itemsObj instanceof List)) {
-                return Optional.empty();
-            }
-            List<?> items = (List<?>) itemsObj;
-            if (items.isEmpty() || !(items.get(0) instanceof Map)) {
-                return Optional.empty();
-            }
-            Map<?, ?> first = (Map<?, ?>) items.get(0);
-            Object nameObj = first.get("name");
-            String name = nameObj != null ? nameObj.toString() : null;
-            String trackUrl = null;
-            Object externalUrlsObj = first.get("external_urls");
-            if (externalUrlsObj instanceof Map) {
-                Map<?, ?> externalUrls = (Map<?, ?>) externalUrlsObj;
-                Object spotifyUrl = externalUrls.get("spotify");
-                if (spotifyUrl != null) {
-                    trackUrl = spotifyUrl.toString();
-                }
-            }
+
+            JsonNode root = objectMapper.readTree(response.getBody());
+            JsonNode firstItem = root.path("tracks").path("items").path(0);
+            String name = firstItem.path("name").asText(null);
+            String trackUrl = firstItem.path("external_urls").path("spotify").asText(null);
+
             if (name == null || name.isBlank()) {
                 return Optional.empty();
             }
@@ -114,7 +92,7 @@ public class SpotifyService {
         String clientId = spotifyProperties.getClientId();
         String clientSecret = spotifyProperties.getClientSecret();
         if (clientId == null || clientId.isBlank() || clientSecret == null || clientSecret.isBlank()) {
-            logger.warn("Spotify credentials not configured.");
+            logger.warn("No spotify credentials.");
             return null;
         }
         if (accessToken != null && accessTokenExpiresAt != null
@@ -132,27 +110,29 @@ public class SpotifyService {
         HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(form, headers);
 
         try {
-            ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
+            ResponseEntity<String> response = restTemplate.exchange(
                     TOKEN_URL,
                     HttpMethod.POST,
                     entity,
-                    new ParameterizedTypeReference<Map<String, Object>>() {
-                    });
-            Map<String, Object> body = response.getBody();
-            if (body == null) {
+                    String.class);
+
+            if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
                 return null;
             }
-            Object tokenObj = body.get("access_token");
-            Object expiresObj = body.get("expires_in");
-            if (tokenObj == null || expiresObj == null) {
+
+            JsonNode root = objectMapper.readTree(response.getBody());
+            String token = root.path("access_token").asText(null);
+            long expiresIn = root.path("expires_in").asLong(0);
+
+            if (token == null || expiresIn <= 0) {
                 return null;
             }
-            accessToken = tokenObj.toString();
-            long expiresIn = Long.parseLong(expiresObj.toString());
+
+            accessToken = token;
             accessTokenExpiresAt = Instant.now().plusSeconds(expiresIn);
             return accessToken;
         } catch (Exception ex) {
-            logger.warn("Spotify token request failed", ex);
+            logger.warn("Spotify token failed", ex);
             return null;
         }
     }

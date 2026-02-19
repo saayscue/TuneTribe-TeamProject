@@ -24,7 +24,7 @@ public class User {
     private String userLName;
     private String userEmail;
     @Column(nullable = false)
-    private boolean banned = false;
+    private Boolean banned = false;
     private String userPassword;
     private String role;
     private String originalRole;
@@ -85,7 +85,7 @@ public class User {
     }
 
     public boolean isBanned() {
-        return banned;
+        return Boolean.TRUE.equals(banned);
     }
 
     public String getUserPassword() {
@@ -104,7 +104,7 @@ public class User {
         this.userEmail = userEmail;
     }
 
-    public void setBanned(boolean banned) {
+    public void setBanned(Boolean banned) {
         this.banned = banned;
     }
 

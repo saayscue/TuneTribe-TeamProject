@@ -15,11 +15,13 @@ public class UserService {
 
     public void registerUser(User user) {
         user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
+        user.setBanned(user.isBanned());
         repo.save(user);
     }
 
     public void saveUser(User user) {
         user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
+        user.setBanned(user.isBanned());
         repo.save(user);
     }
 }
