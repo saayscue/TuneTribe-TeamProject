@@ -1,6 +1,6 @@
 # TuneTribe
 
-TuneTribe is a team Spring Boot music app where users and artists share posts, follow each other, and manage with role-based dashboards.
+TuneTribe is a Spring Boot music app group project where users and artists share posts, follow each other, and manage with role-based dashboards.
 
 ## Spotify API
 Artists can add a track to a post by entering a track title and artist name. It calls Spotify’s Search API (type=track, query: track:{title} artist:{artist}) and shows the Spotify track URL on the post.
@@ -30,7 +30,7 @@ Artists can add a track to a post by entering a track title and artist name. It 
 ## Install:
 
 - Java 21 or higher
-- MySQL Server (I used XAMPP which includes phpMyAdmin)
+- MySQL Server (Used XAMPP which includes phpMyAdmin)
 
 ## Setup
 
